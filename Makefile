@@ -13,7 +13,7 @@ DEPS = nrutil.h nrdef.h mouvement.h
 LIBS = 
 
 #Set any compiler flags you want to use (e.g. -I/usr/include/somefolder `pkg-config --cflags gtk+-3.0` ), or leave blank
-CFLAGS = 
+CFLAGS = -g
 
 #Set the compiler you are using ( gcc for C or g++ for C++ )
 CC = gcc
