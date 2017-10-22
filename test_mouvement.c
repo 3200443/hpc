@@ -4,6 +4,7 @@
 #include "nrutil.h"
 #include <string.h>
 #include "mouvement.h"
+#include "morpho.h"
 #define NBIMAGES 199
 //I0 = It et I1 = It-1 : pareil pour tout
 
