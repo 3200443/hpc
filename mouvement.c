@@ -11,12 +11,12 @@
 #define VMIN 2
 #define VMAX 255 //V est entre 2 et 2^m-1 avec m le nombre de bits des donnees ici 8 => https://hal.inria.fr/hal-01130889/document
 
-int inline min(int a, int b)
+__attribute__ ((always_inline))int inline min(int a, int b)
 {
     return a<b ? a:b;
 }
 
-int inline max(int a, int b)
+__attribute__ ((always_inline))int inline max(int a, int b)
 {
     return a>b ? a:b;
 }
