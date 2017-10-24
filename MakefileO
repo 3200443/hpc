@@ -13,7 +13,7 @@ DEPS = nrutil.h nrdef.h mouvement.h morpho.h
 LIBS = 
 
 #Set any compiler flags you want to use (e.g. -I/usr/include/somefolder `pkg-config --cflags gtk+-3.0` ), or leave blank
-CFLAGS = -g -Wall
+CFLAGS = -g -Wall -O3
 
 #Set the compiler you are using ( gcc for C or g++ for C++ )
 CC = gcc
@@ -31,7 +31,8 @@ hpc_1: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 #Cleanup
-.PHONY: clean
+.PHONY: Cleanup
+
 
 clean:
 	rm -f *.o *~ core *~ 
