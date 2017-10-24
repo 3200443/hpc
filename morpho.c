@@ -9,275 +9,112 @@
 
 void erosion3x3(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
 {
-
-	int i,j;
-	uint8 result,x1,x2,x3,x4,x5,x6,x7,x8,x9;
-
-
+	int i,j,k,l;
+	uint8 result;
 	for(i=nrl;i<nrh;i++)
 	{
-		//Prologue:
-		x1 = X[i-1][ncl-1];
-		x2 = X[i][ncl-1];
-		x3 = X[i+1][ncl-1];
-
-		x4 = X[i-1][ncl];
-		x5 = X[i][ncl];
-		x6 = X[i+1][ncl];
-		for(j=ncl;j<nch-2;j+=3)
+		for(j=ncl;j<nch;j++)
 		{
-			x7 = X[i-1][j+1];
-			x8 = X[i][j+1];
-			x9 = X[i+1][j+1];
-			result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
+			result = 255;
+			for(k = i-1 ; k < i+2 ; k++)
+			{
+				for(l = j-1;l<j+2 ; l++)
+				{
+					result &= X[k][l];
+				}
+			}
 			Y[i][j] = result;
-
-			x1 = X[i-1][j+2];
-			x2 = X[i][j+2];
-			x3 = X[i+1][j+2];
-			result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-			Y[i][j+1] = result;
-
-			x4 = X[i-1][j+3];
-			x5 = X[i][j+3];
-			x6 = X[i+1][j+3];
-			result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-			Y[i][j+2] = result;
-		}
-		//Epilogue
-		switch((nch-2)%3)
-		{
-			case 0 :
-			{
-				x7 = X[i-1][j+1];
-				x8 = X[i][j+1];
-				x9 = X[i+1][j+1];
-				result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-				Y[i][j] = result;
-
-				x1 = X[i-1][j+2];
-				x2 = X[i][j+2];
-				x3 = X[i+1][j+2];
-				result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-				Y[i][j+1] = result;
-				break;
-			}
-			case 1:
-			{
-				if(j>(nch-2))
-				{
-					x7 = X[i-1][j+1];
-					x8 = X[i][j+1];
-					x9 = X[i+1][j+1];
-					result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-					Y[i][j] = result;
-					break;
-				}else
-				{
-					x7 = X[i-1][j+1];
-					x8 = X[i][j+1];
-					x9 = X[i+1][j+1];
-					result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-					Y[i][j] = result;
-
-					x1 = X[i-1][j+2];
-					x2 = X[i][j+2];
-					x3 = X[i+1][j+2];
-					result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-					Y[i][j+1] = result;
-
-					x4 = X[i-1][j+3];
-					x5 = X[i][j+3];
-					x6 = X[i+1][j+3];
-					result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-					Y[i][j+2] = result;
-
-					x4 = X[i-1][j+4];
-					x5 = X[i][j+4];
-					x6 = X[i+1][j+4];
-					result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-					Y[i][j+3] = result;
-
-					break;
-				}
-			}
-			case 2:
-			{
-				if(j>(nch-2))
-				{
-					x7 = X[i-1][j+1];
-					x8 = X[i][j+1];
-					x9 = X[i+1][j+1];
-					result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-					Y[i][j] = result;
-
-					x1 = X[i-1][j+2];
-					x2 = X[i][j+2];
-					x3 = X[i+1][j+2];
-					result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-					Y[i][j+1] = result;
-					break;
-				}else
-				{
-					x7 = X[i-1][j+1];
-					x8 = X[i][j+1];
-					x9 = X[i+1][j+1];
-					result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-					Y[i][j] = result;
-
-					x1 = X[i-1][j+2];
-					x2 = X[i][j+2];
-					x3 = X[i+1][j+2];
-					result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-					Y[i][j+1] = result;
-
-					x4 = X[i-1][j+3];
-					x5 = X[i][j+3];
-					x6 = X[i+1][j+3];
-					result = x1&x2&x3&x4&x5&x6&x7&x8&x9;
-					Y[i][j+2] = result;
-				}
-			}
 		}
 	}
 }
 
 void dilatation3x3(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
 {
-
-	int i,j;
-	uint8 result,x1,x2,x3,x4,x5,x6,x7,x8,x9;
-
-
+	int i,j,k,l;
+	uint8 result;
 	for(i=nrl;i<nrh;i++)
 	{
-		//Prologue:
-		x1 = X[i-1][ncl-1];
-		x2 = X[i][ncl-1];
-		x3 = X[i+1][ncl-1];
-
-		x4 = X[i-1][ncl];
-		x5 = X[i][ncl];
-		x6 = X[i+1][ncl];
-		for(j=ncl;j<nch-2;j+=3)
+		for(j=ncl;j<nch;j++)
 		{
-			x7 = X[i-1][j+1];
-			x8 = X[i][j+1];
-			x9 = X[i+1][j+1];
-			result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
+			result = 0;
+			for(k = i-1 ; k < i+2 ; k++)
+			{
+				for(l = j-1;l<j+2 ; l++)
+				{
+					result |= X[k][l];
+				}
+			}
 			Y[i][j] = result;
-
-			x1 = X[i-1][j+2];
-			x2 = X[i][j+2];
-			x3 = X[i+1][j+2];
-			result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-			Y[i][j+1] = result;
-
-			x4 = X[i-1][j+3];
-			x5 = X[i][j+3];
-			x6 = X[i+1][j+3];
-			result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-			Y[i][j+2] = result;
-		}
-		//Epilogue
-		switch((nch-2)%3)
-		{
-			case 0 :
-			{
-				x7 = X[i-1][j+1];
-				x8 = X[i][j+1];
-				x9 = X[i+1][j+1];
-				result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-				Y[i][j] = result;
-
-				x1 = X[i-1][j+2];
-				x2 = X[i][j+2];
-				x3 = X[i+1][j+2];
-				result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-				Y[i][j+1] = result;
-				break;
-			}
-			case 1:
-			{
-				if(j>(nch-2))
-				{
-					x7 = X[i-1][j+1];
-					x8 = X[i][j+1];
-					x9 = X[i+1][j+1];
-					result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-					Y[i][j] = result;
-					break;
-				}else
-				{
-					x7 = X[i-1][j+1];
-					x8 = X[i][j+1];
-					x9 = X[i+1][j+1];
-					result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-					Y[i][j] = result;
-
-					x1 = X[i-1][j+2];
-					x2 = X[i][j+2];
-					x3 = X[i+1][j+2];
-					result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-					Y[i][j+1] = result;
-
-					x4 = X[i-1][j+3];
-					x5 = X[i][j+3];
-					x6 = X[i+1][j+3];
-					result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-					Y[i][j+2] = result;
-
-					x4 = X[i-1][j+4];
-					x5 = X[i][j+4];
-					x6 = X[i+1][j+4];
-					result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-					Y[i][j+3] = result;
-
-					break;
-				}
-			}
-			case 2:
-			{
-				if(j>(nch-2))
-				{
-					x7 = X[i-1][j+1];
-					x8 = X[i][j+1];
-					x9 = X[i+1][j+1];
-					result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-					Y[i][j] = result;
-
-					x1 = X[i-1][j+2];
-					x2 = X[i][j+2];
-					x3 = X[i+1][j+2];
-					result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-					Y[i][j+1] = result;
-					break;
-				}else
-				{
-					x7 = X[i-1][j+1];
-					x8 = X[i][j+1];
-					x9 = X[i+1][j+1];
-					result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-					Y[i][j] = result;
-
-					x1 = X[i-1][j+2];
-					x2 = X[i][j+2];
-					x3 = X[i+1][j+2];
-					result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-					Y[i][j+1] = result;
-
-					x4 = X[i-1][j+3];
-					x5 = X[i][j+3];
-					x6 = X[i+1][j+3];
-					result = x1|x2|x3|x4|x5|x6|x7|x8|x9;
-					Y[i][j+2] = result;
-				}
-			}
 		}
 	}
 }
 
+void fermeture3x3(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
+{
+	uint8 **O0 = ui8matrix(nrl, nrh, ncl, nch);
+	dilatation3x3(X, O0, nrl, nrh, ncl, nch);
+	erosion3x3(O0, Y,nrl,nrh,ncl,nch);
+}
+
 void ouverture3x3(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
 {
-	
+	uint8 **O0 = ui8matrix(nrl, nrh, ncl, nch);
+	erosion3x3(X, O0,nrl,nrh,ncl,nch);
+	dilatation3x3(O0, Y, nrl, nrh, ncl, nch);
+}
+
+void erosion5x5(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
+{
+	int i,j,k,l;
+	uint8 result;
+	for(i=nrl;i<nrh;i++)
+	{
+		for(j=ncl;j<nch;j++)
+		{
+			result = 255;
+			for(k = i-2 ; k < i+3 ; k++)
+			{
+				for(l = j-2;l<j+3 ; l++)
+				{
+					result &= X[k][l];
+				}
+			}
+			Y[i][j] = result;
+		}
+	}
+}
+
+void dilatation5x5(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
+{
+	int i,j,k,l;
+	uint8 result;
+	for(i=nrl;i<nrh;i++)
+	{
+		for(j=ncl;j<nch;j++)
+		{
+			result = 0;
+			for(k = i-2 ; k < i+3 ; k++)
+			{
+				for(l = j-2;l<j+3 ; l++)
+				{
+					result |= X[k][l];
+				}
+			}
+			Y[i][j] = result;
+		}
+	}
+}
+
+void fermeture5x5(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
+{
+	uint8 **O0 = ui8matrix(nrl, nrh, ncl, nch);
+	dilatation5x5(X, O0, nrl, nrh, ncl, nch);
+	erosion5x5(O0, Y,nrl,nrh,ncl,nch);
+}
+
+void ouverture5x5(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
+{
+	uint8 **O0 = ui8matrix(nrl, nrh, ncl, nch);
+	erosion5x5(X, O0,nrl,nrh,ncl,nch);
+	dilatation5x5(O0, Y, nrl, nrh, ncl, nch);
 }

@@ -88,30 +88,7 @@ void test_routine_FrameDifference(int seuil)
 
 void test_routine_FrameDifferenceMorpho(int seuil)
 {
-    char nomImageLoad[50];// = "car3/car_3";
-    char nomImageSave[50];// = "car3Sigma/car_3"
-    long nrl, nrh, ncl, nch;
-    uint8 **I1 =  LoadPGM_ui8matrix("car3/car_3000.pgm", &nrl, &nrh, &ncl, &nch);
-    uint8 **I0 = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **E0 = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **RES1 = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **RES2 = ui8matrix(nrl, nrh, ncl, nch);
-    int nrow=nrh-nrl+1,ncol=nch-ncl+1;
-
-    for(int i = 1; i <= NBIMAGES; i++)
-    {
-        sprintf(nomImageLoad, "car3/car_3%03d.pgm", i);//Image a t
-        MLoadPGM_ui8matrix(nomImageLoad, nrl, nrh, ncl, nch, I0);
-
-        routine_FrameDifference(I0, I1, E0, nrl,nrh,ncl,nch, seuil);
-        
-        sprintf(nomImageSave, "car3FrameM/car_3%03d.pgm", i);
-        SavePGM_ui8matrix(E0, nrl, nrh, ncl, nch, nomImageSave);
-        memcpy(I1[nrl], I0[nrl], sizeof(uint8)*(nrow*ncol));
-    }
-    free_ui8matrix(I0, nrl, nrh, ncl, nch );
-    free_ui8matrix(I1, nrl, nrh, ncl, nch );
-    free_ui8matrix(E0, nrl, nrh, ncl, nch );
+    
 }
 
 int main(int argc, char* argv[])
@@ -119,10 +96,6 @@ int main(int argc, char* argv[])
 
     test_routine_FrameDifference(atoi(argv[1]));
     test_routine_sigmaDelta();
-
-
-
-
 
     return 0;
 }
