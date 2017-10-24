@@ -16,6 +16,8 @@ __attribute__ ((always_inline))int inline min(int a, int b)
     return a<b ? a:b;
 }
 
+
+
 __attribute__ ((always_inline))int inline max(int a, int b)
 {
     return a>b ? a:b;
