@@ -27,7 +27,7 @@ EXTENSION = .c
 
 #Combine them into the output file
 #Set your desired exe output file name here
-hpc_1: $(OBJ)
+hpc_NO: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 #Cleanup
