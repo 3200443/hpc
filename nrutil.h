@@ -48,6 +48,7 @@ uint32** ui32matrix(long nrl, long nrh, long ncl, long nch);
 sint32** qi32matrix(long nrl, long nrh, long ncl, long nch);
 float32** f32matrix(long nrl, long nrh, long ncl, long nch);
 float64** f64matrix(long nrl, long nrh, long ncl, long nch);
+rgb8** rgb8matrix(long nrl, long nrh, long ncl, long nch);
 
     
 void free_ui8matrix(uint8   **m, long nrl, long nrh, long ncl, long nch);
