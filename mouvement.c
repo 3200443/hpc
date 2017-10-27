@@ -76,7 +76,7 @@ void routine_SigmaDelta_1step(uint8 **I0, uint8 **I1, uint8**V0, uint8 **V1, uin
             if(M1[i][j] < I0[i][j])
                 M0[i][j]  = M1[i][j] + 1;
 
-            else if(M1[i][j] < I0[i][j])
+            else if(M1[i][j] > I0[i][j])
                 M0[i][j] = M1[i][j] - 1;
 
             else
