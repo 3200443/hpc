@@ -11,18 +11,25 @@
 #define VMIN 2
 #define VMAX 255 //V est entre 2 et 2^m-1 avec m le nombre de bits des donnees ici 8 => https://hal.inria.fr/hal-01130889/document
 
-__attribute__ ((always_inline))int inline min(int a, int b)
+__attribute__ ((always_inline))int inline minO(int a, int b)
+{
+    return a<b ? a:b;
+}
+int min(int a, int b)
 {
     return a<b ? a:b;
 }
 
 
-
-__attribute__ ((always_inline))int inline max(int a, int b)
+__attribute__ ((always_inline))int inline maxO(int a, int b)
 {
     return a>b ? a:b;
 }
 
+int max(int a, int b)
+{
+    return a>b ? a:b;
+}
 
 uint8 ** routine_FrameDifference(uint8 **I0, uint8 **I1, uint8 **E0, long nrl,long nrh,long ncl,long nch, int seuil)
 {
