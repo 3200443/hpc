@@ -88,7 +88,7 @@ void test_routine_FrameDifference(int seuil)
 
 void test_routine_FrameDifferenceMorpho(int seuil)
 {
-    
+    /*pour commit */
 }
 
 int main(int argc, char* argv[])
