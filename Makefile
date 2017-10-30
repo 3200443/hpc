@@ -1,4 +1,7 @@
-FILE = main.c morpho.c mouvement.c nrutil.c test_mouvement.c vnrutil.c
+FILE = main.c $(normal) $(SSE2)
+
+normal = morpho.c mouvement.c nrutil.c test_mouvement.c vnrutil.c 
+SSE2 = test_mouvement_SSE2.c mouvement_SSE2.c
 
 # -- Paths ----------
 SRC_PATH = src

@@ -36,17 +36,17 @@ uint8 ** routine_FrameDifference(uint8 **It, uint8 **Itm1, uint8 **Et, long nrl,
     //m[nrl..nrh][ncl..nch]
 
     uint8 **Ot = ui8matrix(nrl, nrh, ncl, nch);
-    for(int i = nrl; i < nrh; i++ )
+    for(int i = nrl; i <= nrh; i++ )
     {
-        for(int j = ncl; j < nch; j++)
+        for(int j = ncl; j <= nch; j++)
         {
             Ot[i][j] = abs(It[i][j] - Itm1[i][j]);
 
         }
     }
-    for(int i = nrl; i < nrh; i++ )
+    for(int i = nrl; i <= nrh; i++ )
     {
-        for(int j = ncl; j < nch; j++)
+        for(int j = ncl; j <= nch; j++)
         {
             if(Ot[i][j] < seuil)
                 Et[i][j] = 0;
@@ -61,9 +61,9 @@ uint8 ** routine_FrameDifference(uint8 **It, uint8 **Itm1, uint8 **Et, long nrl,
 
 void routine_SigmaDelta_step0(uint8** I, uint8 **M, uint8 **V, long nrl, long nrh, long ncl, long nch)
 {
-    for(int i = nrl; i < nrh; i++ )
+    for(int i = nrl; i <= nrh; i++ )
     {
-        for(int j = ncl; j < nch; j++)
+        for(int j = ncl; j <= nch; j++)
         {
             M[i][j] = I[i][j];
             V[i][j] = 10; //Au depart a VMIN mais il y avait beaucoup de mouvement des le debut, a 10 ça marche mieux
@@ -75,9 +75,9 @@ void routine_SigmaDelta_1step(uint8 **It, uint8 **Itm1, uint8**Vt, uint8 **Vtm1,
 {
     uint8 **Ot = ui8matrix(nrl, nrh, ncl, nch);
 
-    for(int i = nrl; i < nrh; i++ ) //Step1 Mt Estimation
+    for(int i = nrl; i <= nrh; i++ ) //Step1 Mt Estimation
     {
-        for(int j = ncl; j < nch; j++)
+        for(int j = ncl; j <= nch; j++)
         {
             if(Mtm1[i][j] < It[i][j])
                 Mt[i][j]  = Mtm1[i][j] + 1;
@@ -93,18 +93,18 @@ void routine_SigmaDelta_1step(uint8 **It, uint8 **Itm1, uint8**Vt, uint8 **Vtm1,
     }
 
 
-    for(int i = nrl; i < nrh; i++)//Step 2 difference Computation
+    for(int i = nrl; i <= nrh; i++)//Step 2 difference Computation
     {
-        for(int j = ncl; j < nch; j++)
+        for(int j = ncl; j <= nch; j++)
         {
             Ot[i][j] = abs(Mt[i][j] - It[i][j]);
         }
     }
 
 
-    for(int i = nrl; i < nrh; i++)//Step 3 Update and clamping
+    for(int i = nrl; i <= nrh; i++)//Step 3 Update and clamping
     {
-        for(int j = ncl; j < nch; j++)
+        for(int j = ncl; j <= nch; j++)
         {
             if(Vtm1[i][j] < N * Ot[i][j])
                 Vt[i][j]  = Vtm1[i][j] + 1;
@@ -121,9 +121,9 @@ void routine_SigmaDelta_1step(uint8 **It, uint8 **Itm1, uint8**Vt, uint8 **Vtm1,
         }
     }
 
-    for(int i = nrl; i < nrh; i++)//Step 4 Et estimation
+    for(int i = nrl; i <= nrh; i++)//Step 4 Et estimation
     {
-        for(int j = ncl; j < nch; j++)
+        for(int j = ncl; j <= nch; j++)
         {
             if(Ot[i][j] < Vt[i][j])
                 Et[i][j] = 0;
