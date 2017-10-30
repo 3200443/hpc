@@ -31,16 +31,16 @@ int max(int a, int b)
     return a>b ? a:b;
 }
 
-uint8 ** routine_FrameDifference(uint8 **I0, uint8 **I1, uint8 **E0, long nrl,long nrh,long ncl,long nch, int seuil)
+uint8 ** routine_FrameDifference(uint8 **It, uint8 **Itm1, uint8 **Et, long nrl,long nrh,long ncl,long nch, int seuil)
 {
     //m[nrl..nrh][ncl..nch]
 
-    uint8 **O0 = ui8matrix(nrl, nrh, ncl, nch);
+    uint8 **Ot = ui8matrix(nrl, nrh, ncl, nch);
     for(int i = nrl; i < nrh; i++ )
     {
         for(int j = ncl; j < nch; j++)
         {
-            O0[i][j] = abs(I0[i][j] - I1[i][j]);
+            Ot[i][j] = abs(It[i][j] - Itm1[i][j]);
 
         }
     }
@@ -48,15 +48,20 @@ uint8 ** routine_FrameDifference(uint8 **I0, uint8 **I1, uint8 **E0, long nrl,lo
     {
         for(int j = ncl; j < nch; j++)
         {
-            if(O0[i][j] < seuil)
-                E0[i][j] = 0;
+            if(Ot[i][j] < seuil)
+                Et[i][j] = 0;
             else
-                E0[i][j] = 255;
+                Et[i][j] = 255;
 
         }
     }
-    free_ui8matrix(O0, nrl, nrh, ncl, nch);
-    return E0;
+    free_ui8matrix(Ot, nrl, nrh, ncl, nch);
+    return Et;
+}
+
+uint8 ** routine_FrameDifference_SSE2(uint8 **It, uint8 **Itm1, uint8 **Et, long nrl,long nrh,long ncl,long nch, int seuil){
+
+
 }
 
 
@@ -72,22 +77,22 @@ void routine_SigmaDelta_step0(uint8** I, uint8 **M, uint8 **V, long nrl, long nr
     }
 }
 
-void routine_SigmaDelta_1step(uint8 **I0, uint8 **I1, uint8**V0, uint8 **V1, uint8**M0, uint8 **M1, uint8 **E0,  long nrl, long nrh, long ncl, long nch )
+void routine_SigmaDelta_1step(uint8 **It, uint8 **Itm1, uint8**Vt, uint8 **Vtm1, uint8**Mt, uint8 **Mtm1, uint8 **Et,  long nrl, long nrh, long ncl, long nch )
 {
-    uint8 **O0 = ui8matrix(nrl, nrh, ncl, nch);
+    uint8 **Ot = ui8matrix(nrl, nrh, ncl, nch);
 
     for(int i = nrl; i < nrh; i++ ) //Step1 Mt Estimation
     {
         for(int j = ncl; j < nch; j++)
         {
-            if(M1[i][j] < I0[i][j])
-                M0[i][j]  = M1[i][j] + 1;
+            if(Mtm1[i][j] < It[i][j])
+                Mt[i][j]  = Mtm1[i][j] + 1;
 
-            else if(M1[i][j] > I0[i][j])
-                M0[i][j] = M1[i][j] - 1;
+            else if(Mtm1[i][j] > It[i][j])
+                Mt[i][j] = Mtm1[i][j] - 1;
 
             else
-                M0[i][j] = M1[i][j];
+                Mt[i][j] = Mtm1[i][j];
 
 
         }
@@ -98,7 +103,7 @@ void routine_SigmaDelta_1step(uint8 **I0, uint8 **I1, uint8**V0, uint8 **V1, uin
     {
         for(int j = ncl; j < nch; j++)
         {
-            O0[i][j] = abs(M0[i][j] - I0[i][j]);
+            Ot[i][j] = abs(Mt[i][j] - It[i][j]);
         }
     }
 
@@ -107,16 +112,16 @@ void routine_SigmaDelta_1step(uint8 **I0, uint8 **I1, uint8**V0, uint8 **V1, uin
     {
         for(int j = ncl; j < nch; j++)
         {
-            if(V1[i][j] < N * O0[i][j])
-                V0[i][j]  = V1[i][j] + 1;
+            if(Vtm1[i][j] < N * Ot[i][j])
+                Vt[i][j]  = Vtm1[i][j] + 1;
 
-            else if(V1[i][j] < N * O0[i][j])
-                V0[i][j] = V1[i][j] - 1;
+            else if(Vtm1[i][j] < N * Ot[i][j])
+                Vt[i][j] = Vtm1[i][j] - 1;
 
             else
-                V0[i][j] = V1[i][j];
+                Vt[i][j] = Vtm1[i][j];
 
-            V0[i][j] = max( min(V0[i][j], VMAX), VMIN);
+            Vt[i][j] = max( min(Vt[i][j], VMAX), VMIN);
 
 
         }
@@ -126,12 +131,13 @@ void routine_SigmaDelta_1step(uint8 **I0, uint8 **I1, uint8**V0, uint8 **V1, uin
     {
         for(int j = ncl; j < nch; j++)
         {
-            if(O0[i][j] < V0[i][j])
-                E0[i][j] = 0;
+            if(Ot[i][j] < Vt[i][j])
+                Et[i][j] = 0;
             else
-                E0[i][j] = 255;
+                Et[i][j] = 255;
         }
     }
-    free_ui8matrix(O0, nrl, nrh, ncl, nch);
+    free_ui8matrix(Ot, nrl, nrh, ncl, nch);
 
 }
+
