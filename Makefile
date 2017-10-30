@@ -37,10 +37,6 @@ $(EXEC): $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS) -lm
 
 
-
-.depend:
-	g++ -MM $(SRC) > .depend
--include .depend
 clean:
 	rm -f $(OBJ) $(EXEC)
 
