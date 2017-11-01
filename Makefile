@@ -44,4 +44,4 @@ clean:
 	rm -f $(OBJ) $(EXEC)
 
 test:
-	./hpc_NO
+	./hpc_NO.exe

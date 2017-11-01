@@ -31,7 +31,7 @@ int max(int a, int b)
     return a>b ? a:b;
 }
 
-uint8 ** routine_FrameDifference(uint8 **It, uint8 **Itm1, uint8 **Et, long nrl,long nrh,long ncl,long nch, int seuil)
+void routine_FrameDifference(uint8 **It, uint8 **Itm1, uint8 **Et, long nrl,long nrh,long ncl,long nch, int seuil)
 {
     //m[nrl..nrh][ncl..nch]
 
@@ -56,7 +56,6 @@ uint8 ** routine_FrameDifference(uint8 **It, uint8 **Itm1, uint8 **Et, long nrl,
         }
     }
     free_ui8matrix(Ot, nrl, nrh, ncl, nch);
-    return Et;
 }
 
 void routine_SigmaDelta_step0(uint8** I, uint8 **M, uint8 **V, long nrl, long nrh, long ncl, long nch)
