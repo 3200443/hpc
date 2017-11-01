@@ -10,7 +10,7 @@
 #define NBIMAGES 199
 //I0 = It et I1 = It-1 : pareil pour tout
 
-void init_tab(vuint8 **vX1, uint8 **Itm1, int vi0, int vi1, int vj0, int vj1)
+void MatScal2MatSIMD(vuint8 **vX1, uint8 **Itm1, int vi0, int vi1, int vj0, int vj1)
 {
     vuint8 x;
     vuint8 T[1];
@@ -30,7 +30,7 @@ void init_tab(vuint8 **vX1, uint8 **Itm1, int vi0, int vi1, int vj0, int vj1)
     }
 }
 
-void init_tab_inv(vuint8 **vX1, uint8 **Itm1, int vi0, int vi1, int vj0, int vj1)
+void MatSIMD2MatScal(vuint8 **vX1, uint8 **Itm1, int vi0, int vi1, int vj0, int vj1)
 {
     vuint8 T[1];
     vuint8 x;
@@ -73,17 +73,17 @@ void test_routine_FrameDifference_SSE2(int seuil)
     vuint8 ** vXEt = vui8matrix_s(nrl, nrh, ncl, nch);
     vuint8 seuilSIMD = init_vuint8(seuil); //Copie du seuil dans un vecteur SIMD
 
-    init_tab(vXtm1, Itm1, vi0, vi1, vj0, vj1);    //On fait la copie de l'image dans une matrice SIMD
+    MatScal2MatSIMD(vXtm1, Itm1, vi0, vi1, vj0, vj1);    //On fait la copie de l'image dans une matrice SIMD
 
 
     for(int i = 1; i <= NBIMAGES; i++)
     {
         sprintf(nomImageLoad, "car3/car_3%03d.pgm", i);//Image a t
         MLoadPGM_ui8matrix(nomImageLoad, nrl, nrh, ncl, nch, It);
-        init_tab(vXt, It,  vi0, vi1, vj0, vj1);
+        MatScal2MatSIMD(vXt, It,  vi0, vi1, vj0, vj1);
 
         routine_FrameDifference_SSE2(vXt, vXtm1, vXEt, vi0, vi1, vj0, vj1, seuilSIMD);
-        init_tab_inv(vXEt, Et, vi0, vi1, vj0, vj1);    //On fait la copie d'une matrice SIMD dans une image normale
+        MatSIMD2MatScal(vXEt, Et, vi0, vi1, vj0, vj1);    //On fait la copie d'une matrice SIMD dans une image normale
         sprintf(nomImageSave, "car3FrameSIMD/car_3%03d.pgm", i);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
         memcpy(vXtm1[vi0], vXt[vi0], sizeof(vuint8)*(nrow*ncol));
