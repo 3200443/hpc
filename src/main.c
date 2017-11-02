@@ -3,12 +3,13 @@
 #include "test_mouvement.h"
 #include "test_mouvement_SSE2.h"
 
-#define OPTI 1
+#define OPTI 3 //1 pour optimisation 2 sans optimisation 3 pour tout
 int main(int argc, char* argv[])
 {
-#if OPTI == 1
+#if OPTI & 0x1
     test_routine_FrameDifference_SSE2(10);
-#else
+#endif
+#if OPTI & 0x2
     test_routine_FrameDifference(10);
     test_routine_sigmaDelta();
 #endif
