@@ -81,6 +81,7 @@ void test_routine_FrameDifference(int seuil)
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
         memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
     }
+
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
     free_ui8matrix(Et, nrl, nrh, ncl, nch );
