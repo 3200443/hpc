@@ -8,6 +8,7 @@ int main(int argc, char* argv[])
 {
 #if OPTI & 0x1
     test_routine_FrameDifference_SSE2(10);
+    test_routine_sigmaDelta_SSE2();
 #endif
 #if OPTI & 0x2
     test_routine_FrameDifference(10);

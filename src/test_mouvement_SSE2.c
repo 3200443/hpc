@@ -98,3 +98,64 @@ void test_routine_FrameDifference_SSE2(int seuil)
 
 
 }
+
+
+void test_routine_sigmaDelta_SSE2()
+{
+    char nomImageLoad[50];// = "car3/car_3";
+    char nomImageSave[50];// = "car3Sigma/car_3"
+    long nrl, nrh, ncl, nch;
+
+    //Partie scalaire
+    uint8 **Itm1 =  LoadPGM_ui8matrix("car3/car_3000.pgm", &nrl, &nrh, &ncl, &nch);
+    uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
+    uint8 **Et = ui8matrix(nrl, nrh, ncl, nch);
+
+    // Partie vecteur
+    int vi0, vi1, vj0, vj1; //Indices SIMD
+    s2v(nrl, nrh, ncl, nch, 16, &vi0, &vi1, &vj0, &vj1); //Recuperation des seuils SIMD
+    int nrow=vi1-vi0+1,ncol=vj1-vj0+1;
+
+    vuint8 ** vXtm1 = vui8matrix_s(nrl, nrh, ncl, nch); //Creation d'une matrice SIMD avec les indices scalaires
+    vuint8 ** vXt = vui8matrix_s(nrl, nrh, ncl, nch);
+    vuint8 ** vXEt = vui8matrix_s(nrl, nrh, ncl, nch);
+
+    vuint8 ** vXMt = vui8matrix_s(nrl, nrh, ncl, nch);
+    vuint8 ** vXMtm1 = vui8matrix_s(nrl, nrh, ncl, nch);
+
+    vuint8 ** vXVt = vui8matrix_s(nrl, nrh, ncl, nch);
+    vuint8 ** vXVtm1 = vui8matrix_s(nrl, nrh, ncl, nch);
+
+
+    MatScal2MatSIMD(vXtm1, Itm1, vi0, vi1, vj0, vj1);    //On fait la copie de l'image dans une matrice SIMD
+    routine_SigmaDelta_step0SSE2(vXtm1, vXMtm1,vXVtm1, vi0, vi1, vj0, vj1);
+
+    for(int i = 1; i <= NBIMAGES; i++)
+    {
+        sprintf(nomImageLoad, "car3/car_3%03d.pgm", i);//Image a t
+        MLoadPGM_ui8matrix(nomImageLoad, nrl, nrh, ncl, nch, It);
+        MatScal2MatSIMD(vXt, It,  vi0, vi1, vj0, vj1);
+
+        routine_SigmaDelta_1stepSSE2(vXt, vXtm1, vXVt, vXVtm1, vXMt, vXMtm1, vXEt, vi0, vi1, vj0, vj1);
+        MatSIMD2MatScal(vXEt, Et, vi0, vi1, vj0, vj1);    //On fait la copie d'une matrice SIMD dans une image normale
+        sprintf(nomImageSave, "car3SigmaSIMD/car_3%03d.pgm", i);
+        SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
+        memcpy(vXtm1[vi0], vXt[vi0], sizeof(vuint8)*(nrow*ncol));
+        memcpy(vXVtm1[vi0], vXVt[vi0], sizeof(vuint8)*(nrow*ncol));
+        memcpy(vXMtm1[vi0], vXMt[vi0], sizeof(vuint8)*(nrow*ncol));
+
+    }
+    free_ui8matrix(It, nrl, nrh, ncl, nch );
+    free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_vui8matrix(vXtm1, vi0, vi1, vj0, vj1);
+    free_vui8matrix(vXt, vi0, vi1, vj0, vj1);
+    free_vui8matrix(vXVtm1, vi0, vi1, vj0, vj1);
+    free_vui8matrix(vXVt, vi0, vi1, vj0, vj1);
+    free_vui8matrix(vXMtm1, vi0, vi1, vj0, vj1);
+    free_vui8matrix(vXMt, vi0, vi1, vj0, vj1);
+    free_vui8matrix(vXEt, vi0, vi1, vj0, vj1);
+
+
+
+}

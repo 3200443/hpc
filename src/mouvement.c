@@ -8,8 +8,9 @@
 #include "nrutil.h"
 
 #define N 2
-#define VMIN 2
+#define VMIN 20
 #define VMAX 255 //V est entre 2 et 2^m-1 avec m le nombre de bits des donnees ici 8 => https://hal.inria.fr/hal-01130889/document
+#define VINI 35
 
 __attribute__ ((always_inline))int inline minO(int a, int b)
 {
@@ -65,7 +66,7 @@ void routine_SigmaDelta_step0(uint8** I, uint8 **M, uint8 **V, long nrl, long nr
         for(int j = ncl; j <= nch; j++)
         {
             M[i][j] = I[i][j];
-            V[i][j] = 10; //Au depart a VMIN mais il y avait beaucoup de mouvement des le debut, a 10 ça marche mieux
+            V[i][j] = VINI; //Au depart a VMIN mais il y avait beaucoup de mouvement des le debut, a VINI ça marche mieux
         }
     }
 }
@@ -73,7 +74,7 @@ void routine_SigmaDelta_step0(uint8** I, uint8 **M, uint8 **V, long nrl, long nr
 void routine_SigmaDelta_1step(uint8 **It, uint8 **Itm1, uint8**Vt, uint8 **Vtm1, uint8**Mt, uint8 **Mtm1, uint8 **Et,  long nrl, long nrh, long ncl, long nch )
 {
     uint8 **Ot = ui8matrix(nrl, nrh, ncl, nch);
-
+    static int test = 0;
     for(int i = nrl; i <= nrh; i++ ) //Step1 Mt Estimation
     {
         for(int j = ncl; j <= nch; j++)
@@ -105,18 +106,17 @@ void routine_SigmaDelta_1step(uint8 **It, uint8 **Itm1, uint8**Vt, uint8 **Vtm1,
     {
         for(int j = ncl; j <= nch; j++)
         {
+
             if(Vtm1[i][j] < N * Ot[i][j])
                 Vt[i][j]  = Vtm1[i][j] + 1;
 
-            else if(Vtm1[i][j] < N * Ot[i][j])
+            else if(Vtm1[i][j] > N * Ot[i][j])
                 Vt[i][j] = Vtm1[i][j] - 1;
 
             else
                 Vt[i][j] = Vtm1[i][j];
 
             Vt[i][j] = max( min(Vt[i][j], VMAX), VMIN);
-
-
         }
     }
 
