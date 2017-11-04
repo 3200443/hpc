@@ -24,7 +24,7 @@ void creation_ppm(){
             }
         }
 
-        sprintf(nomImageSave, "/home/souley/Bureau/ppm/car_3%03d.pgm", i);
+        sprintf(nomImageSave, "/home/souley/Bureau/ppm/car_3%03d.ppm", i);
         SavePPM_rgb8matrix(It, nrl, nrh, ncl, nch, nomImageSave);
     }
 
@@ -35,13 +35,13 @@ int main(int argc, char* argv[])
 {
 #if OPTI & 0x1
     //test_routine_FrameDifference_SSE2(10);
-    test_routine_sigmaDelta_SSE2();
+    //test_routine_sigmaDelta_SSE2();
 #endif
 #if OPTI & 0x2
     //test_routine_FrameDifference(10);
     //test_routine_sigmaDelta();
 #endif
 
-    //creation_ppm();
+    creation_ppm();
     return 0;
 }
