@@ -45,6 +45,8 @@ int main(int argc, char* argv[])
 #if OPTI & 0x2
     test_routine_FrameDifference(10);
     test_routine_FrameDifferenceMorpho3x3ouverture(10);
+    test_routine_FrameDifferenceMorpho3x3fermeture(10);
+    test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(10);
     test_routine_sigmaDelta();
 #endif
 
