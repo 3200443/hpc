@@ -5,6 +5,9 @@
 #define NBIMAGES 199
 #include "nrdef.h"
 #include "nrutil.h"
+
+
+
 void creation_ppm(){
 	char nomImageLoad[50];// = "car3/car_3";
     char nomImageSave[50];// = "car3Sigma/car_3"
@@ -30,18 +33,21 @@ void creation_ppm(){
 
 }
 
-#define OPTI 3 //1 pour optimisation 2 sans optimisation 3 pour tout
+#define OPTI 3 //1 pour optimisation 2 sans optimisation 3 pour tout 0 pour rien
+
+
 int main(int argc, char* argv[])
 {
 #if OPTI & 0x1
-    //test_routine_FrameDifference_SSE2(10);
-    //test_routine_sigmaDelta_SSE2();
+    test_routine_FrameDifference_SSE2(10);
+    test_routine_sigmaDelta_SSE2();
 #endif
 #if OPTI & 0x2
-    //test_routine_FrameDifference(10);
-    //test_routine_sigmaDelta();
+    test_routine_FrameDifference(10);
+    test_routine_FrameDifferenceMorpho3x3ouverture(10);
+    test_routine_sigmaDelta();
 #endif
 
-    creation_ppm();
+    //creation_ppm();
     return 0;
 }

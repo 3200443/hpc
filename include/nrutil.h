@@ -9,7 +9,7 @@
 #ifndef __NRUTIL_H__
 #define __NRUTIL_H__
 
-//#pragma message("  include  nrutil.h")
+#pragma message("  include  nrutil.h")
 
 #ifdef __cplusplus
 #pragma message ("C++")
@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 
-#define NR_END 0
+#define NR_END 4
 #define FREE_ARG char*
 
 extern long nr_end;
