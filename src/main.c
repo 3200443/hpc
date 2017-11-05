@@ -47,6 +47,7 @@ int main(int argc, char* argv[])
     test_routine_FrameDifferenceMorpho3x3ouverture(10);
     test_routine_FrameDifferenceMorpho3x3fermeture(10);
     test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(10);
+    test_routine_FrameDifferenceMorpho3x3fermetureOuverture(10);
     test_routine_sigmaDelta();
 #endif
 
