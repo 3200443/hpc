@@ -5,6 +5,7 @@
 #define NBIMAGES 199
 #include "nrdef.h"
 #include "nrutil.h"
+#include "matric_roc.h"
 
 
 
@@ -50,7 +51,7 @@ int main(int argc, char* argv[])
     test_routine_FrameDifferenceMorpho3x3fermetureOuverture(10);
     //test_routine_sigmaDelta();
 #endif
-
+    creation_matrices_ROC("verite/car_3165.pgm", "car3Sigma/car_3165.pgm");
     //creation_ppm();
     return 0;
 }
