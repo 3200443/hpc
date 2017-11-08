@@ -41,9 +41,10 @@ void routine_FrameDifference_SSE2(vuint8 **It, vuint8 **Itm1, vuint8 **Et, long 
     	{
     		tmpOt = _mm_load_si128(&vXOt[i][j]);
             vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpOt, maxInt8), _mm_sub_epi8(seuil, maxInt8)); //Met 1 si inferieur au seuil et 0 si superieur
-
-            vuint8 dest = _mm_or_si128(_mm_and_si128(res, pixelNoir), _mm_andnot_si128(res, pixelBlanc)); //Pixel noir si res a 1 et pixel blanc si res a 0
-            _mm_store_si128(&Et[i][j], dest);
+            //display_vuint8(res," %d ", "Res");
+            //vuint8 dest = _mm_or_si128(_mm_and_si128(res, pixelNoir), _mm_andnot_si128(res, pixelBlanc)); //Pixel noir si res a 1 et pixel blanc si res a 0
+            res = _mm_andnot_si128(res, pixelBlanc);
+            _mm_store_si128(&Et[i][j], res);
 
         }
     }
@@ -96,8 +97,8 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
 
     		tmpMtm1 = _mm_load_si128(&Mtm1[i][j]);
     		tmpIt = _mm_load_si128(&It[i][j]);
-    		vuint8 Mtm1Plus1 = _mm_adds_epu8(tmpMtm1, un);
-    		vuint8 Mtm1Moins1 = _mm_subs_epu8(tmpMtm1, un);
+    		vuint8 Mtm1Plus1 = _mm_add_epi8(tmpMtm1, un);
+    		vuint8 Mtm1Moins1 = _mm_sub_epi8(tmpMtm1, un);
 
     		vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpMtm1, maxInt8), _mm_sub_epi8(tmpIt, maxInt8));
             tmpMt = _mm_or_si128(_mm_and_si128(res, Mtm1Plus1), _mm_andnot_si128(res, tmpMtm1)); //Mtm1< It
@@ -132,8 +133,8 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
     			NfoisOt = _mm_adds_epi8(NfoisOt, tmpOt);
     		}
 
-    		vuint8 Vtm1Plus1 = _mm_adds_epu8(tmpVtm1, un);
-    		vuint8 Vtm1Moins1 = _mm_subs_epu8(tmpVtm1, un);
+    		vuint8 Vtm1Plus1 = _mm_add_epi8(tmpVtm1, un);
+    		vuint8 Vtm1Moins1 = _mm_sub_epi8(tmpVtm1, un);
     		vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpVtm1, maxInt8), _mm_sub_epi8(NfoisOt, maxInt8));
             tmpVt = _mm_or_si128(_mm_and_si128(res, Vtm1Plus1), _mm_andnot_si128(res, tmpVtm1)); //Vtm1< N*Ot
 

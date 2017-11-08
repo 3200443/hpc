@@ -9,6 +9,32 @@
 #define NBIMAGES 199
 //I0 = It et I1 = It-1 : pareil pour tout
 
+
+
+void test_unitaire_FD()
+{
+    long nrl=0, nrh = 1, ncl = 0, nch = 7;
+    uint8 It[2][8]={{245, 216, 145, 196, 255, 0, 147, 196},{3, 220, 206, 42, 237, 135, 24, 87}};
+    uint8 Itm1[2][8]= {{235, 226, 134, 207, 255, 255, 138, 205},{84, 194, 135, 235, 177, 66, 212, 29}};
+    uint8 Et[2][8];
+
+    int nrow=nrh-nrl+1,ncol=nch-ncl+1;
+
+    routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, 10);
+
+    uint8 Rep[2][8] = {{255, 255, 255, 255, 0, 255, 0, 0 },{255, 255, 255,255, 255,255, 255,255}};
+    for(int i = nrl; i <= nrh; i++ )
+	{
+		for(int j = ncl; j <= nch; j++)
+		{
+        }
+    }
+
+
+
+
+}
+
 void test_routine_sigmaDelta()
 {
     //m[nrl..nrh][ncl..nch]

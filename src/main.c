@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
     // test_routine_FrameDifferenceMorpho3x3fermeture(10);
     // test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(10);
     test_routine_FrameDifferenceMorpho3x3fermetureOuverture(10);
-    //test_routine_sigmaDelta();
+    test_routine_sigmaDelta();
 #endif
     //creation_matrices_ROC("verite/car_3165.pgm", "car3Frame3x3FO/car_3165.pgm");
     creation_ppm();
