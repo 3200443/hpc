@@ -9,29 +9,24 @@
 
 
 
-void creation_ppm(){
-	char nomImageLoad[50];// = "car3/car_3";
-    char nomImageSave[50];// = "car3Sigma/car_3"
-    long nrl, nrh, ncl, nch;
-    uint8 **Itm1 =  LoadPGM_ui8matrix("car3/car_3000.pgm", &nrl, &nrh, &ncl, &nch);
-    rgb8 **It = rgb8matrix(nrl, nrh, ncl, nch);
-	for(int i = 0; i <= NBIMAGES; i++)
-    {
-        sprintf(nomImageLoad, "car3/car_3%03d.pgm", i);//Image a t
-        MLoadPGM_ui8matrix(nomImageLoad, nrl, nrh, ncl, nch, Itm1);
+void creation_ppm()
+{
 
-        for(int k = nrl; k <= nrh; k++){
-            for(int l = ncl; l <= nch; l++){
-                It[k][l].r = Itm1[k][l];
-                It[k][l].g = Itm1[k][l];
-                It[k][l].b = Itm1[k][l];
+    long nrl, nrh, ncl, nch;
+    uint8 **Itm1 =  LoadPGM_ui8matrix("car3Frame/car_3158.pgm", &nrl, &nrh, &ncl, &nch);
+    uint8 **It = LoadPGM_ui8matrix("car3FrameSIMD/car_3158.pgm", &nrl, &nrh, &ncl, &nch);
+    uint8 **Image = LoadPGM_ui8matrix("car3/car_3158.pgm",&nrl, &nrh, &ncl, &nch);
+    uint8 **Image2 = LoadPGM_ui8matrix("car3/car_3104.pgm",&nrl, &nrh, &ncl, &nch);
+
+    for(int k = nrl; k <= nrh; k++)
+    {
+        for(int l = ncl; l <= nch; l++)
+        {
+            if(Itm1[k][l] != It[k][l]){
+                printf("Probleme ! i = %d, j = %d, ItNormal = %d, Itavant = %d\n",k , l, Image[k][l], Image2[k][l]);
             }
         }
-
-        sprintf(nomImageSave, "/home/souley/Bureau/ppm/car_3%03d.ppm", i);
-        SavePPM_rgb8matrix(It, nrl, nrh, ncl, nch, nomImageSave);
     }
-
 }
 
 #define OPTI 3 //1 pour optimisation 2 sans optimisation 3 pour tout 0 pour rien
@@ -51,7 +46,8 @@ int main(int argc, char* argv[])
     test_routine_FrameDifferenceMorpho3x3fermetureOuverture(10);
     //test_routine_sigmaDelta();
 #endif
-    creation_matrices_ROC("verite/car_3165.pgm", "car3Sigma/car_3165.pgm");
-    //creation_ppm();
+    //creation_matrices_ROC("verite/car_3165.pgm", "car3Frame3x3FO/car_3165.pgm");
+    creation_ppm();
+
     return 0;
 }

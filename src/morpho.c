@@ -11,9 +11,9 @@ void erosion3x3(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
 {
 	int i,j,k,l;
 	uint8 result;
-	for(i=nrl;i<nrh;i++)
+	for(i=nrl;i<=nrh;i++)
 	{
-		for(j=ncl;j<nch;j++)
+		for(j=ncl;j<=nch;j++)
 		{
 			result = 255;
 			for(k = i-1 ; k < i+2 ; k++)
@@ -32,9 +32,9 @@ void dilatation3x3(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
 {
 	int i,j,k,l;
 	uint8 result;
-	for(i=nrl;i<nrh;i++)
+	for(i=nrl;i<=nrh;i++)
 	{
-		for(j=ncl;j<nch;j++)
+		for(j=ncl;j<=nch;j++)
 		{
 			result = 0;
 			for(k = i-1 ; k < i+2 ; k++)
@@ -69,9 +69,9 @@ void erosion5x5(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
 {
 	int i,j,k,l;
 	uint8 result;
-	for(i=nrl;i<nrh;i++)
+	for(i=nrl;i<=nrh;i++)
 	{
-		for(j=ncl;j<nch;j++)
+		for(j=ncl;j<=nch;j++)
 		{
 			result = 255;
 			for(k = i-2 ; k < i+3 ; k++)
@@ -90,9 +90,9 @@ void dilatation5x5(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
 {
 	int i,j,k,l;
 	uint8 result;
-	for(i=nrl;i<nrh;i++)
+	for(i=nrl;i<=nrh;i++)
 	{
-		for(j=ncl;j<nch;j++)
+		for(j=ncl;j<=nch;j++)
 		{
 			result = 0;
 			for(k = i-2 ; k < i+3 ; k++)

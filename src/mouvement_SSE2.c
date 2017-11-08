@@ -22,6 +22,7 @@ void routine_FrameDifference_SSE2(vuint8 **It, vuint8 **Itm1, vuint8 **Et, long 
 	vuint8 pixelNoir = init_vuint8(0);
 	vuint8 pixelBlanc = init_vuint8(255);
 	vuint8 tmpEt;
+	vuint8 maxInt8 = init_vuint8(127);
 	for(int i = vi0; i <= vi1; i++ )
 	{
 		for(int j = vj0; j <= vj1; j++)
@@ -39,7 +40,7 @@ void routine_FrameDifference_SSE2(vuint8 **It, vuint8 **Itm1, vuint8 **Et, long 
     	for(int j = vj0; j <= vj1; j++)
     	{
     		tmpOt = _mm_load_si128(&vXOt[i][j]);
-            vuint8 res = _mm_cmplt_epi8(tmpOt, seuil); //Met 1 si inferieur au seuil et 0 si superieur
+            vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpOt, maxInt8), _mm_sub_epi8(seuil, maxInt8)); //Met 1 si inferieur au seuil et 0 si superieur
 
             vuint8 dest = _mm_or_si128(_mm_and_si128(res, pixelNoir), _mm_andnot_si128(res, pixelBlanc)); //Pixel noir si res a 1 et pixel blanc si res a 0
             _mm_store_si128(&Et[i][j], dest);

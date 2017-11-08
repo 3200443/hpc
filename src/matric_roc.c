@@ -13,9 +13,9 @@ void creation_matrices_ROC(char fichierVerite[], char fichierTest[])
     uint8 **ImageTest =  LoadPGM_ui8matrix(fichierTest, &nrl, &nrh, &ncl, &nch);
     int matRoc[2][2] = {0};
 
-    for(int i = nrl; i < nrh; i++)
+    for(int i = nrl; i <= nrh; i++)
     {
-        for(int j = ncl; j < nch; j++)
+        for(int j = ncl; j <= nch; j++)
         {
             if(ImageTest[i][j] == 255 && ImageVerite[i][j] == 255)
                 matRoc[0][0]+=1; //VP
@@ -28,5 +28,4 @@ void creation_matrices_ROC(char fichierVerite[], char fichierTest[])
         }
     }
     printf("Matrice ROC = \n%d %d\n%d %d\n",matRoc[0][0], matRoc[0][1], matRoc[1][0], matRoc[1][1]);
-
 }
