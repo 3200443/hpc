@@ -7,7 +7,5 @@ void test_routine_FrameDifferenceMorpho3x3ouverture(int seuil);
 void test_routine_FrameDifferenceMorpho3x3fermeture(int seuil);
 void test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(int seuil);
 void test_routine_FrameDifferenceMorpho3x3fermetureOuverture(int seuil);
-<<<<<<< HEAD
 void test_routine_FrameDifferenceMorpho3x3fermeturefermeture(int seuil);
-=======
->>>>>>> 0ad2c6407f9fcf4d99298f8a256b90897331bdef
+

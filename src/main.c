@@ -29,7 +29,7 @@ void creation_ppm()
     }
 }
 
-#define OPTI 3 //1 pour optimisation 2 sans optimisation 3 pour tout 0 pour rien
+#define OPTI 2 //1 pour optimisation 2 sans optimisation 3 pour tout 0 pour rien
 
 
 int main(int argc, char* argv[])
@@ -39,21 +39,18 @@ int main(int argc, char* argv[])
     test_routine_sigmaDelta_SSE2();
 #endif
 #if OPTI & 0x2
-    test_routine_FrameDifference(10);
+    //test_routine_FrameDifference(10);
     // test_routine_FrameDifferenceMorpho3x3ouverture(10);
     // test_routine_FrameDifferenceMorpho3x3fermeture(10);
     // test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(10);
-    test_routine_FrameDifferenceMorpho3x3fermetureOuverture(10);
-<<<<<<< HEAD
-    test_routine_FrameDifferenceMorpho3x3fermeturefermeture(10);
+    //test_routine_FrameDifferenceMorpho3x3fermetureOuverture(10);
+    //test_routine_FrameDifferenceMorpho3x3fermeturefermeture(10);
     //test_routine_sigmaDelta();
-=======
     test_routine_sigmaDelta();
->>>>>>> 0ad2c6407f9fcf4d99298f8a256b90897331bdef
 #endif
     //creation_matrices_ROC("verite/car_3165.pgm", "car3Frame3x3FO/car_3165.pgm");
     //creation_ppm();
-    test_unitaire_SD_SSE2();
+    //test_unitaire_SD_SSE2();
 
     return 0;
 }

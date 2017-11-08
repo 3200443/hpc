@@ -63,7 +63,10 @@ void test_routine_sigmaDelta()
     {
         sprintf(nomImageLoad,"car3/car_3%03d.pgm",i);//Image a t
         MLoadPGM_ui8matrix(nomImageLoad, nrl, nrh, ncl, nch, It);
+        
         routine_SigmaDelta_1step(It, Itm1, Vt, Vtm1, Mt, Mtm1, Et, nrl, nrh, ncl, nch);
+        //routine_SigmaDelta_1stepO(It, Itm1, Vt, Vtm1, Mt, Mtm1, Et, nrl, nrh, ncl, nch); // Pas si vraiment optimisé que ca quand on compile avec -O3...
+
         sprintf(nomImageSave,"car3Sigma/car_3%03d.pgm",i);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);//Copie de t a t-1
         memcpy(Mtm1[nrl], Mt[nrl], sizeof(uint8)*(nrow*ncol));
