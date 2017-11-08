@@ -22,7 +22,7 @@ void routine_FrameDifference_SSE2(vuint8 **It, vuint8 **Itm1, vuint8 **Et, long 
 	vuint8 pixelNoir = init_vuint8(0);
 	vuint8 pixelBlanc = init_vuint8(255);
 	vuint8 tmpEt;
-	vuint8 maxInt8 = init_vuint8(127);
+	vuint8 maxSChar = init_vuint8(128);
 	for(int i = vi0; i <= vi1; i++ )
 	{
 		for(int j = vj0; j <= vj1; j++)
@@ -40,7 +40,7 @@ void routine_FrameDifference_SSE2(vuint8 **It, vuint8 **Itm1, vuint8 **Et, long 
     	for(int j = vj0; j <= vj1; j++)
     	{
     		tmpOt = _mm_load_si128(&vXOt[i][j]);
-            vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpOt, maxInt8), _mm_sub_epi8(seuil, maxInt8)); //Met 1 si inferieur au seuil et 0 si superieur
+            vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpOt, maxSChar), _mm_sub_epi8(seuil, maxSChar)); //Met 1 si inferieur au seuil et 0 si superieur
             //display_vuint8(res," %d ", "Res");
             //vuint8 dest = _mm_or_si128(_mm_and_si128(res, pixelNoir), _mm_andnot_si128(res, pixelBlanc)); //Pixel noir si res a 1 et pixel blanc si res a 0
             res = _mm_andnot_si128(res, pixelBlanc);
@@ -84,10 +84,10 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
 	vuint8 un = init_vuint8(1);
 	vuint8 VMAXSIMD = init_vuint8(VMAX);
 	vuint8 VMINSIMD = init_vuint8(VMIN);
-    vuint8 maxInt8 = init_vuint8(127);
-    //Les comparaisons se font en signe donc il faut sub 127 pour que ça fasse une comparaison correcte
-    //255 devient 127, 127 => 0 et 0 => -127
-    //Si on ne fait pas ca, on a 127 < 128 qui est faux
+    vuint8 maxSChar = init_vuint8(128);
+    //Les comparaisons se font en signe donc il faut sub 128 pour que ça fasse une comparaison correcte
+    //255 devient 128, 128 => 0 et 0 => -128
+    //Si on ne fait pas ca, on a 128 < 128 qui est faux
 
     for(int i = vi0; i <= vi1; i++ )//Step1
     {
@@ -100,10 +100,10 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
     		vuint8 Mtm1Plus1 = _mm_add_epi8(tmpMtm1, un);
     		vuint8 Mtm1Moins1 = _mm_sub_epi8(tmpMtm1, un);
 
-    		vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpMtm1, maxInt8), _mm_sub_epi8(tmpIt, maxInt8));
+    		vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpMtm1, maxSChar), _mm_sub_epi8(tmpIt, maxSChar));
             tmpMt = _mm_or_si128(_mm_and_si128(res, Mtm1Plus1), _mm_andnot_si128(res, tmpMtm1)); //Mtm1< It
 
-            res = _mm_cmpgt_epi8(_mm_sub_epi8(tmpMtm1, maxInt8), _mm_sub_epi8(tmpIt, maxInt8));
+            res = _mm_cmpgt_epi8(_mm_sub_epi8(tmpMtm1, maxSChar), _mm_sub_epi8(tmpIt, maxSChar));
             tmpMt = _mm_or_si128(_mm_and_si128(res, Mtm1Moins1), _mm_andnot_si128(res, tmpMt)); // //Mtm1 > It
             _mm_store_si128(&Mt[i][j], tmpMt);
         }
@@ -135,10 +135,10 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
 
     		vuint8 Vtm1Plus1 = _mm_add_epi8(tmpVtm1, un);
     		vuint8 Vtm1Moins1 = _mm_sub_epi8(tmpVtm1, un);
-    		vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpVtm1, maxInt8), _mm_sub_epi8(NfoisOt, maxInt8));
+    		vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpVtm1, maxSChar), _mm_sub_epi8(NfoisOt, maxSChar));
             tmpVt = _mm_or_si128(_mm_and_si128(res, Vtm1Plus1), _mm_andnot_si128(res, tmpVtm1)); //Vtm1< N*Ot
 
-            res = _mm_cmpgt_epi8(_mm_sub_epi8(tmpVtm1, maxInt8), _mm_sub_epi8(NfoisOt, maxInt8));
+            res = _mm_cmpgt_epi8(_mm_sub_epi8(tmpVtm1, maxSChar), _mm_sub_epi8(NfoisOt, maxSChar));
             tmpVt = _mm_or_si128(_mm_and_si128(res, Vtm1Moins1), _mm_andnot_si128(res, tmpVt)); // //Vtm1 > N* Ot
 
 
@@ -155,7 +155,7 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
     	{
     		tmpOt = _mm_load_si128(&vXOt[i][j]);
     		tmpVt = _mm_load_si128(&Vt[i][j]);
-            vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpOt,maxInt8), _mm_sub_epi8(tmpVt,maxInt8)); //Met 1 si inferieur a Vt et 0 si superieur
+            vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpOt,maxSChar), _mm_sub_epi8(tmpVt,maxSChar)); //Met 1 si inferieur a Vt et 0 si superieur
 
             vuint8 dest = _mm_or_si128(_mm_and_si128(res, pixelNoir), _mm_andnot_si128(res, pixelBlanc)); //Pixel noir si res a 1 et pixel blanc si res a 0
             _mm_store_si128(&Et[i][j], dest);

@@ -52,6 +52,54 @@ void MatSIMD2MatScal(vuint8 **vX1, uint8 **Itm1, int vi0, int vi1, int vj0, int 
     }
 }
 
+void test_unitaire_SD_SSE2()
+{
+    /*Test du step1*/
+    printf("Test Step 1 avec(Mtm1-It) \n127-128, 255-255, 0-0, 0-1, 1-0, 255-254, 254-255,50-60,70-45, 50-50, + Cas non critiques\n");
+    vuint8 Mtm1 = init_vuint8_all(127, 255, 0, 0, 1, 255, 254, 50, 70, 50, 104, 17, 195, 6, 90, 156);
+    vuint8 It = init_vuint8_all(128, 255, 0, 1, 0, 254, 255, 60, 45, 50, 133, 67, 149, 198, 191, 68);
+    vuint8 tmpMt;
+    vuint8 un = init_vuint8(1);
+
+    vuint8 maxSChar = init_vuint8(128);
+
+    display_vuint8(It," %d ","ItStep1");
+    printf("\n");
+    display_vuint8(Mtm1," %d ","Mtm1Step1");
+    printf("\n");
+
+
+    vuint8 Mtm1Plus1 = _mm_add_epi8(Mtm1, un);
+    vuint8 Mtm1Moins1 = _mm_sub_epi8(Mtm1, un);
+
+    vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(Mtm1, maxSChar), _mm_sub_epi8(It, maxSChar));
+    tmpMt = _mm_or_si128(_mm_and_si128(res, Mtm1Plus1), _mm_andnot_si128(res, Mtm1)); //Mtm1< It
+
+    res = _mm_cmpgt_epi8(_mm_sub_epi8(Mtm1, maxSChar), _mm_sub_epi8(It, maxSChar));
+    tmpMt = _mm_or_si128(_mm_and_si128(res, Mtm1Moins1), _mm_andnot_si128(res, tmpMt)); // //Mtm1 > It
+
+    display_vuint8(tmpMt, " %d ","Mt");
+    printf("\n");
+
+    printf("Resultat attendu de Mt\n: 128, 255, 0, 2, 254, 255, 51, 69, 50, 105, 18, 194, 7, 91, 155\n");
+
+
+
+
+
+
+
+    /*vuint8 pixelNoir = init_vuint8(0);
+    vuint8 pixelBlanc = init_vuint8(255);
+    vuint8 tmpEt;
+    vuint8 un = init_vuint8(1);
+    vuint8 VMAXSIMD = init_vuint8(VMAX);
+    vuint8 VMINSIMD = init_vuint8(VMIN);*/
+
+
+
+}
+
 void test_routine_FrameDifference_SSE2(int seuil)
 {
     char nomImageLoad[50];// = "car3/car_3";

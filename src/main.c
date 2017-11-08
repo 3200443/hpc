@@ -13,8 +13,8 @@ void creation_ppm()
 {
 
     long nrl, nrh, ncl, nch;
-    uint8 **Itm1 =  LoadPGM_ui8matrix("car3Frame/car_3158.pgm", &nrl, &nrh, &ncl, &nch);
-    uint8 **It = LoadPGM_ui8matrix("car3FrameSIMD/car_3158.pgm", &nrl, &nrh, &ncl, &nch);
+    uint8 **Itm1 =  LoadPGM_ui8matrix("car3Sigma/car_3158.pgm", &nrl, &nrh, &ncl, &nch);
+    uint8 **It = LoadPGM_ui8matrix("car3SigmaSIMD/car_3158.pgm", &nrl, &nrh, &ncl, &nch);
     uint8 **Image = LoadPGM_ui8matrix("car3/car_3158.pgm",&nrl, &nrh, &ncl, &nch);
     uint8 **Image2 = LoadPGM_ui8matrix("car3/car_3104.pgm",&nrl, &nrh, &ncl, &nch);
 
@@ -47,7 +47,8 @@ int main(int argc, char* argv[])
     test_routine_sigmaDelta();
 #endif
     //creation_matrices_ROC("verite/car_3165.pgm", "car3Frame3x3FO/car_3165.pgm");
-    creation_ppm();
+    //creation_ppm();
+    test_unitaire_SD_SSE2();
 
     return 0;
 }
