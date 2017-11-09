@@ -105,7 +105,7 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
             //Step 3 Vt Update and clamping
             for(int k = 0; k < N; k++)
             {
-                NfoisOt = _mm_add_epi8(NfoisOt, tmpOt);
+                NfoisOt = _mm_adds_epi8(NfoisOt, tmpOt);
             }
 
             vuint8 Vtm1Plus1 = _mm_add_epi8(tmpVtm1, un);

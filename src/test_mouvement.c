@@ -20,7 +20,6 @@ void test_unitaire_FD()
 
     int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
-    routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, 10);
 
     uint8 Rep[2][8] = {{255, 255, 255, 255, 0, 255, 0, 0 },{255, 255, 255,255, 255,255, 255,255}};
     for(int i = nrl; i <= nrh; i++ )
