@@ -6,6 +6,7 @@
 #include "nrutil.h"
 #include "mouvement_SSE2.h"
 #include "morpho.h"
+#include "morpho_simd.h"
 
 #define NBIMAGES 199
 //I0 = It et I1 = It-1 : pareil pour tout
@@ -143,6 +144,65 @@ void test_routine_FrameDifference_SSE2(int seuil)
     free_vui8matrix(vXt, vi0, vi1, vj0, vj1);
     free_vui8matrix(vXEt, vi0, vi1, vj0, vj1);
 
+
+
+}
+
+void test_routine_FrameDifference_SSE2M(int seuil)
+{
+    char nomImageLoad[50];// = "car3/car_3";
+    char nomImageSave[50];// = "car3Sigma/car_3"
+    long nrl, nrh, ncl, nch;
+
+    //Partie scalaire
+    uint8 **Itm1 =  LoadPGM_ui8matrix("car3/car_3000.pgm", &nrl, &nrh, &ncl, &nch);
+    uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
+    uint8 **Et = ui8matrix(nrl, nrh, ncl, nch);
+
+
+    // Partie vecteur
+    int vi0, vi1, vj0, vj1; //Indices SIMD
+    s2v(nrl, nrh, ncl, nch, 16, &vi0, &vi1, &vj0, &vj1); //Recuperation des seuils SIMD
+    int nrow=vi1-vi0+1,ncol=vj1-vj0+1;
+
+    vuint8 ** vXtm1 = vui8matrix_s(nrl, nrh, ncl, nch); //Creation d'une matrice SIMD avec les indices scalaires
+    vuint8 ** vXt = vui8matrix_s(nrl, nrh, ncl, nch);
+    vuint8 ** vXEt = vui8matrix_s(nrl, nrh, ncl, nch);
+    //
+    vuint8 ** vXEt1 = vui8matrix_s(nrl, nrh, ncl, nch);
+    vuint8 ** vXEt2 = vui8matrix_s(nrl, nrh, ncl, nch);
+    //
+    vuint8 seuilSIMD = init_vuint8(seuil); //Copie du seuil dans un vecteur SIMD
+
+    MatScal2MatSIMD(vXtm1, Itm1, vi0, vi1, vj0, vj1);    //On fait la copie de l'image dans une matrice SIMD
+
+
+    for(int i = 1; i <= NBIMAGES; i++)
+    {
+        sprintf(nomImageLoad, "car3/car_3%03d.pgm", i);//Image a t
+        MLoadPGM_ui8matrix(nomImageLoad, nrl, nrh, ncl, nch, It);
+        MatScal2MatSIMD(vXt, It,  vi0, vi1, vj0, vj1);
+
+        routine_FrameDifference_SSE2(vXt, vXtm1, vXEt, vi0, vi1, vj0, vj1, seuilSIMD);
+        //
+        dilatation3x3_SIMD(vXEt,vXEt1,vi0,vi1,vj0,vj1);
+        erosion3x3_SIMD(vXEt1,vXEt2,vi0,vi1,vj0,vj1);
+        //
+        MatSIMD2MatScal(vXEt2, Et, vi0, vi1, vj0, vj1);    //On fait la copie d'une matrice SIMD dans une image normale
+        sprintf(nomImageSave, "car3FrameSIMD_M/car_3%03d.pgm", i);
+        SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
+        memcpy(vXtm1[vi0], vXt[vi0], sizeof(vuint8)*(nrow*ncol));
+    }
+    free_ui8matrix(It, nrl, nrh, ncl, nch );
+    free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_vui8matrix(vXtm1, vi0, vi1, vj0, vj1);
+    free_vui8matrix(vXt, vi0, vi1, vj0, vj1);
+    free_vui8matrix(vXEt, vi0, vi1, vj0, vj1);
+    //
+    free_vui8matrix(vXEt1, vi0, vi1, vj0, vj1);
+    free_vui8matrix(vXEt2, vi0, vi1, vj0, vj1);
+    //
 
 
 }

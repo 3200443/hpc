@@ -29,7 +29,7 @@ void creation_ppm()
     }
 }
 
-#define OPTI 2 //1 pour optimisation 2 sans optimisation 3 pour tout 0 pour rien
+#define OPTI 1 //1 pour optimisation 2 sans optimisation 3 pour tout 0 pour rien
 
 
 int main(int argc, char* argv[])
@@ -37,6 +37,7 @@ int main(int argc, char* argv[])
 #if OPTI & 0x1
     test_routine_FrameDifference_SSE2(10);
     test_routine_sigmaDelta_SSE2();
+    test_routine_FrameDifference_SSE2M(10);
 #endif
 #if OPTI & 0x2
     //test_routine_FrameDifference(10);
