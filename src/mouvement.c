@@ -42,17 +42,11 @@ void routine_FrameDifference(uint8 **It, uint8 **Itm1, uint8 **Et, long nrl,long
 		for(int j = ncl; j <= nch; j++)
 		{
 			Ot[i][j] = abs(It[i][j] - Itm1[i][j]);
-
-		}
-	}
-	for(int i = nrl; i <= nrh; i++ )
-	{
-		for(int j = ncl; j <= nch; j++)
-		{
 			if(Ot[i][j] < seuil)
 				Et[i][j] = 0;
 			else
 				Et[i][j] = 255;
+
 
 		}
 	}
