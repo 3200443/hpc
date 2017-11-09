@@ -32,24 +32,25 @@ void erosion3x3_SIMD(vuint8 **It0,vuint8 **It1,long vi0,long vi1,long vj0,long v
 
 	result1 =  _mm_and_si128(l1,l2);
 
-	left = _mm_slli_epi16(result1,1);
 	right = _mm_srli_epi16(result1,1);
-
-
 	right = _mm_or_si128(or_droit,right);
 
 	//ici right contient result1 decallé vers la droite avec 255 comme valeur de gauche
-	for(j;j<vj1;j++)
+	//
+	j++
+	for(j;j<=vj1;j++)
 	{
 		l1 = _mm_load_si128(&It[i+0][j]);
 		l2 = _mm_load_si128(&It[i+1][j]);
 
 		result2 = _mm_and_si128(l1,l2);
 
+		left = _mm_slli_epi16(result1,1);
 		left = _mm_or_si128(left,_mm_srli_epi16(result2,15)); // On complete le vecteur gauche en ajoutant a sa doite la valeur de gauvhe du vecteur suivant
 
 		result3 = _mm_and_si128(left,_mm_and_si128(right,result1)); // Valeur finale de IT1[i][j-1]
 
+		right = _mm_srli_epi16(result2,1);
 		right = _mm_or_si128(result2,_mm_slli_epi16(result1,15));
 
 		result1 = result2;
@@ -57,89 +58,68 @@ void erosion3x3_SIMD(vuint8 **It0,vuint8 **It1,long vi0,long vi1,long vj0,long v
 		_mm_store_si128(&It[i][j-1], result3);
 	}
 
-	left = _mm_or_si128(result2,or_gauche);
+	left = _mm_slli_epi16(result1,1);
+	left = _mm_or_si128(left,or_gauche);
 
 
-	_mm_store_si128(&result3);
+	_mm_store_si128(&It1[i][j-1],result3);
 
 	j= vj0;
-
-	l1 = _mm_load_si128(&It[i+0][j]);
-	l2 = _mm_load_si128(&It[i+1][j]);
-	result1 =  _mm_and_si128(l1,l2);
 	i++;
 	// corps de boucle
-	for(i;i<vj1-1;i++)
+	for(i;i<vj1;i++)
 	{
+		l1 = _mm_load_si128(&It[i+0][j]);
+		l2 = _mm_load_si128(&It[i+1][j]);
 		l3 = _mm_load_si128(&It[i+1][j]);
-		result2 = _mm_and_si128(result2,l3);
-		left = _mm_or_si128(left,_mm_srli_epi16(result2,15)); // On complete le vecteur gauche en ajoutant a sa doite la valeur de gauvhe du vecteur suivant
 
-	}
+		temp =  _mm_and_si128(l1,l2);
+		result1 = _mm_and_si128(temp,l3);
 
+		right = _mm_srli_epi16(result,1);
 
-
-
-
-
-
-
-	int j = vj0;
-	int i = vi0+1;
-
-	//vecteur haut gauche :
-	//
-	l1 = _mm_load_si128(&It[i-1][j]);
-	l2 = _mm_load_si128(&It[i+0][j]);
-	l3 = _mm_load_si128(&It[i+1][j]); //On charge les 3 premier vecteurs
-
-
-	result1 = _mm_and_si128(l1,l2);
-	result2 = _mm_and_si128(result1,l3); // On fait le and verticalement
-
-	left = _mm_slli_epi16(result2,1);
-	right = _mm_srli_epi16(result2,1);
-
-	result1 = init_vuint8(255); //AND DONC 255 INVARIANT
-	result1 = _mm_slli_epi16(result1,15);
-	right = _mm_or_si128(result1,right);
-
-
-
-
-
-	for(i; i < vi1; i++ )
-	{
-
-
-
-
-		for(j; j< vj1; j++)
+		//j vaut vj0 donc on insere un zero a gauche de right
+		right = _mm_or_si128(right,or_droit);
+		j++;
+		for(j;j<=vj1;j++)
 		{
-
-
-
-
-
-
-			l1 = _mm_load_si128(&It[i-1][j]);
-			l2 = _mm_load_si128(&It[i+0][j]);
+			l1 = _mm_load_si128(&It[i+0][j]);
+			l2 = _mm_load_si128(&It[i+1][j]);
 			l3 = _mm_load_si128(&It[i+1][j]);
 
-			result1 = _mm_and_si128(l1,l2);
-			result3 = _mm_and_si128(result1,l2); //result2 contient tous les "and" verticaux
+			temp =  _mm_and_si128(l1,l2);
+			result2 = _mm_and_si128(temp,l3);
 
-			//ici result 2 contient le vecteur precedent, result3 le vecteur courant il faut completer left
-			result1 = _mm_srli_epi16(result3,15);
-			right = _mm_or_si128(result1,right);
+			left = _mm_slli_epi16(result1,1);
+			left = _mm_or_si128(left,_mm_srli_epi16(result2,15)); // On complete le vecteur gauche en ajoutant a sa doite la valeur de gauvhe du vecteur suivant
 
-			left = _mm_slli_epi16(result2,1);
+			result3 = _mm_and_si128(left,_mm_and_si128(right,result1));
+
 			right = _mm_srli_epi16(result2,1);
+			right = _mm_or_si128(result2,_mm_slli_epi16(result1,15));
 
+			result1 = result2;
 
+			_mm_store_si128(&It[i][j-1], result3);
 		}
+
+		left = _mm_slli_epi16(result1,1);
+		left = _mm_or_si128(left,or_gauche);
+
+
+		_mm_store_si128(&It1[i][j-1],result3);
+
+		j= vj0;
 	}
-	
+
+
+
+	//derniere ligne
+
+
+
+
+
 
 
 
