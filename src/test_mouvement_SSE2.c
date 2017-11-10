@@ -186,9 +186,9 @@ void test_routine_FrameDifference_SSE2M(int seuil)
         routine_FrameDifference_SSE2(vXt, vXtm1, vXEt, vi0, vi1, vj0, vj1, seuilSIMD);
         //
         dilatation3x3_SIMD(vXEt,vXEt1,vi0,vi1,vj0,vj1);
-        //dilatation3x3_SIMD(vXEt1,vXEt2,vi0,vi1,vj0,vj1);
+        erosion3x3_SIMD(vXEt1,vXEt2,vi0,vi1,vj0,vj1);
         //
-        MatSIMD2MatScal(vXEt1, Et, vi0, vi1, vj0, vj1);    //On fait la copie d'une matrice SIMD dans une image normale
+        MatSIMD2MatScal(vXEt2, Et, vi0, vi1, vj0, vj1);    //On fait la copie d'une matrice SIMD dans une image normale
         sprintf(nomImageSave, "car3FrameSIMD_M/car_3%03d.pgm", i);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
         memcpy(vXtm1[vi0], vXt[vi0], sizeof(vuint8)*(nrow*ncol));
