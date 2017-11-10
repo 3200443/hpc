@@ -11,7 +11,7 @@ OBJ_PATH = obj
 INC_PATH = include
 
 # -- Flags ----------
-C_DEBUG_FLAGS = -g
+C_DEBUG_FLAGS = -g -O3
 C_ARCH_FLAGS = -msse4.2
 C_INC_FLAGS = -I$(INC_PATH)
 
