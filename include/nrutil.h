@@ -17,10 +17,12 @@ extern "C" {
 #endif
 
 
-#define NR_END 4
+#define NR_END 2
+#define NC_END 2
 #define FREE_ARG char*
 
 extern long nr_end;
+//extern long nc_end;
 
 
 void generate_filename_k_ndigit                 (            char *filename, int k, int ndigit,                         char *complete_filename);

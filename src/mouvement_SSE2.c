@@ -64,7 +64,6 @@ void routine_SigmaDelta_step0SSE2(vuint8** I, vuint8 **M, vuint8 **V, long vi0, 
 
 void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8 **Vtm1, vuint8**Mt, vuint8 **Mtm1, vuint8 **Et,  long vi0, long vi1, long vj0, long vj1 )
 {
-    vuint8 ** vXOt = vui8matrix(vi0, vi1, vj0, vj1);
     vuint8 tmpIt, tmpMt, tmpVt;
     vuint8 tmpItm1, tmpMtm1, tmpVtm1;
     vuint8 tmpOt;
@@ -129,9 +128,5 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
             _mm_store_si128(&Mt[i][j], tmpMt);
         }
     }
-
-
-
-
 
 }

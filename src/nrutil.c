@@ -163,6 +163,10 @@ uint8** ui8matrix(long nrl, long nrh, long ncl, long nch)
 /* --------------------------------------------------- */
 /* allocate an uint8 matrix with subscript range m[nrl..nrh][ncl..nch] */
 {
+  nrl-=2;
+  nrh+=2;
+  ncl-=2;
+  nch+=2;
   long i, nrow=nrh-nrl+1,ncol=nch-ncl+1;
   uint8 **m;
 
@@ -408,6 +412,10 @@ void free_f64vector(float64 *v, long nl, long nh)
 void free_ui8matrix(uint8 **m, long nrl, long nrh, long ncl, long nch)
 /* ---------------------------------------------------------------- */
 {
+  nrl-=2;
+  nrh+=2;
+  ncl-=2;
+  nch+=2;
   free((FREE_ARG) (m[nrl]+ncl-NR_END));
   free((FREE_ARG) (m+nrl-NR_END));
 }

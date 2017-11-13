@@ -23,11 +23,11 @@ void test_unitaire_FD()
 
     uint8 Rep[2][8] = {{255, 255, 255, 255, 0, 255, 0, 0 },{255, 255, 255,255, 255,255, 255,255}};
     for(int i = nrl; i <= nrh; i++ )
-	{
-		for(int j = ncl; j <= nch; j++)
-		{
-        }
-    }
+    {
+      for(int j = ncl; j <= nch; j++)
+      {
+      }
+  }
 
 }
 
@@ -134,7 +134,7 @@ void test_routine_FrameDifferenceMorpho3x3ouverture(int seuil)
 
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame3x3O/car_3%03d.pgm", i);
-        ouverture3x3(Et,Et1, nrl+1,nrh-1,ncl+1,nch-1);
+        ouverture3x3(Et,Et1, nrl,nrh,ncl,nch);
         SavePGM_ui8matrix(Et1, nrl, nrh, ncl, nch, nomImageSave);
         memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
     }
@@ -142,6 +142,8 @@ void test_routine_FrameDifferenceMorpho3x3ouverture(int seuil)
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
     free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et1, nrl, nrh, ncl, nch );
+
 }
 
 void test_routine_FrameDifferenceMorpho3x3fermeture(int seuil)
@@ -163,7 +165,7 @@ void test_routine_FrameDifferenceMorpho3x3fermeture(int seuil)
 
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame3x3F/car_3%03d.pgm", i);
-        fermeture3x3(Et,Et1, nrl+1,nrh-1,ncl+1,nch-1);
+        fermeture3x3(Et,Et1, nrl,nrh,ncl,nch);
         SavePGM_ui8matrix(Et1, nrl, nrh, ncl, nch, nomImageSave);
         memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
     }
@@ -171,6 +173,8 @@ void test_routine_FrameDifferenceMorpho3x3fermeture(int seuil)
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
     free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et1, nrl, nrh, ncl, nch );
+
 }
 void test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(int seuil)
 {
@@ -191,8 +195,8 @@ void test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(int seuil)
 
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame3x3OF/car_3%03d.pgm", i);
-        ouverture3x3(Et,Et1, nrl+1,nrh-1,ncl+1,nch-1);
-        fermeture3x3(Et1,Et, nrl+1,nrh-1,ncl+1,nch-1);
+        ouverture3x3(Et,Et1, nrl,nrh,ncl,nch);
+        fermeture3x3(Et1,Et, nrl,nrh-1,ncl,nch);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
         memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
     }
@@ -200,6 +204,8 @@ void test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(int seuil)
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
     free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et1, nrl, nrh, ncl, nch );
+
 }
 
 void test_routine_FrameDifferenceMorpho3x3fermetureOuverture(int seuil)
@@ -221,8 +227,8 @@ void test_routine_FrameDifferenceMorpho3x3fermetureOuverture(int seuil)
 
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame3x3FO/car_3%03d.pgm", i);
-        fermeture3x3(Et,Et1, nrl+1,nrh-1,ncl+1,nch-1);
-        ouverture3x3(Et1,Et, nrl+1,nrh-1,ncl+1,nch-1);
+        fermeture3x3(Et,Et1, nrl,nrh,ncl,nch);
+        ouverture3x3(Et1,Et, nrl,nrh,ncl,nch);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
         memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
     }
@@ -230,6 +236,8 @@ void test_routine_FrameDifferenceMorpho3x3fermetureOuverture(int seuil)
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
     free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et1, nrl, nrh, ncl, nch );
+
 }
 
 void test_routine_FrameDifferenceMorpho3x3fermeturefermeture(int seuil)
@@ -251,10 +259,10 @@ void test_routine_FrameDifferenceMorpho3x3fermeturefermeture(int seuil)
 
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame3x3FF/car_3%03d.pgm", i);
-        ouverture3x3(Et,Et1, nrl+1,nrh-1,ncl+1,nch-1);
-        fermeture3x3(Et1,Et, nrl+1,nrh-1,ncl+1,nch-1);
-        fermeture3x3(Et,Et1, nrl+1,nrh-1,ncl+1,nch-1);
-        fermeture3x3(Et1,Et, nrl+1,nrh-1,ncl+1,nch-1);
+        ouverture3x3(Et,Et1, nrl,nrh,ncl,nch);
+        fermeture3x3(Et1,Et, nrl,nrh,ncl,nch);
+        fermeture3x3(Et,Et1, nrl,nrh,ncl,nch);
+        fermeture3x3(Et1,Et, nrl,nrh,ncl,nch);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
         memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
     }
@@ -262,4 +270,6 @@ void test_routine_FrameDifferenceMorpho3x3fermeturefermeture(int seuil)
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
     free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et1, nrl, nrh, ncl, nch );
+
 }
