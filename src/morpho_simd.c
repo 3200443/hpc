@@ -292,50 +292,53 @@ void dilatation3x3_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long
 
 void fermeture3x3_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1)
 {
-	vuint8 ** vXVt = vui8matrix_s(nrl, nrh, ncl, nch);
+	vuint8 ** vXVt = vui8matrix_s(vi0, vi1, vj0, vj1);
 	dilatation3x3_SIMD(It,vXVt,vi0,vi1,vj0,vj1);
 	erosion3x3_SIMD(vXVt,It1,vi0,vi1,vj0,vj1);
-	free_vui8matrix(vXVt,nrl, nrh, ncl, nch);
+	free_vui8matrix(vXVt,vi0, vi1, vj0, vj1);
 }
 
 void ouverture3x3_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1)
 {
-	vuint8 ** vXVt = vui8matrix_s(nrl, nrh, ncl, nch);
+	vuint8 ** vXVt = vui8matrix_s(vi0, vi1, vj0, vj1);
 	erosion3x3_SIMD(It,vXVt,vi0,vi1,vj0,vj1);
 	dilatation3x3_SIMD(vXVt,It1,vi0,vi1,vj0,vj1);
-	free_vui8matrix(vXVt,nrl, nrh, ncl, nch);
+	free_vui8matrix(vXVt,vi0, vi1, vj0, vj1);
 }
 
 void erosion5x5_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1)
 {
-	vuint8 ** vXVt = vui8matrix_s(nrl, nrh, ncl, nch);
+	vuint8 ** vXVt = vui8matrix_s(vi0, vi1, vj0, vj1);
 	erosion3x3_SIMD(It,vXVt,vi0,vi1,vj0,vj1);
 	erosion3x3_SIMD(vXVt,It1,vi0,vi1,vj0,vj1);
-	free_vui8matrix(vXVt,nrl, nrh, ncl, nch);
+	free_vui8matrix(vXVt,vi0, vi1, vj0, vj1);
 }
 
 void dilatation5x5_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1)
 {
-	vuint8 ** vXVt = vui8matrix_s(nrl, nrh, ncl, nch);
+	vuint8 ** vXVt = vui8matrix_s(vi0, vi1, vj0, vj1);
 	dilatation3x3_SIMD(It,vXVt,vi0,vi1,vj0,vj1);
 	dilatation3x3_SIMD(vXVt,It1,vi0,vi1,vj0,vj1);
-	free_vui8matrix(vXVt,nrl, nrh, ncl, nch);
+	free_vui8matrix(vXVt,vi0, vi1, vj0, vj1);
 }
 
 void fermeture5x5_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1)
 {
-	vuint8 ** vXVt = vui8matrix_s(nrl, nrh, ncl, nch);
+	vuint8 ** vXVt = vui8matrix_s(vi0, vi1, vj0, vj1);
 	dilatation5x5_SIMD(It,vXVt,vi0,vi1,vj0,vj1);
 	erosion5x5_SIMD(vXVt,It1,vi0,vi1,vj0,vj1);
-	free_vui8matrix(vXVt,nrl, nrh, ncl, nch);
+	free_vui8matrix(vXVt,vi0, vi1, vj0, vj1);
 }
 
 void ouverture5x5_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1)
 {
-	vuint8 ** vXVt = vui8matrix_s(nrl, nrh, ncl, nch);
+	vuint8 ** vXVt = vui8matrix_s(vi0, vi1, vj0, vj1);
 	erosion5x5_SIMD(It,vXVt,vi0,vi1,vj0,vj1);
 	dilatation5x5_SIMD(vXVt,It1,vi0,vi1,vj0,vj1);
-	free_vui8matrix(vXVt,nrl, nrh, ncl, nch);
+	free_vui8matrix(vXVt,vi0, vi1, vj0, vj1);
 }
 
-void fermeture5x5_SIMD_O(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1);
+void fermeture5x5_SIMD_O(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1)
+{
+	
+}
