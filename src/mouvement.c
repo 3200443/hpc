@@ -46,8 +46,6 @@ void routine_FrameDifference(uint8 **It, uint8 **Itm1, uint8 **Et, long nrl,long
 				Et[i][j] = 0;
 			else
 				Et[i][j] = 255;
-
-
 		}
 	}
 	free_ui8matrix(Ot, nrl, nrh, ncl, nch);

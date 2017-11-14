@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 
-#define NR_END 2
+#define NR_END 0
 #define NC_END 2
 #define FREE_ARG char*
 
