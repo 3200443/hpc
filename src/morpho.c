@@ -51,18 +51,18 @@ void dilatation3x3(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
 
 void fermeture3x3(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
 {
-	uint8 **O0 = ui8matrix(nrl-1, nrh+1, ncl-1, nch+1);
+	uint8 **O0 = ui8matrix(nrl, nrh, ncl, nch);
 	dilatation3x3(X, O0, nrl, nrh, ncl, nch);
 	erosion3x3(O0, Y,nrl,nrh,ncl,nch);
-	free_ui8matrix(O0, nrl-1, nrh+1, ncl-1, nch+1);
+	free_ui8matrix(O0, nrl, nrh, ncl, nch);
 }
 
 void ouverture3x3(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
 {
-	uint8 **O0 = ui8matrix(nrl-1, nrh+1, ncl-1, nch+1);
+	uint8 **O0 = ui8matrix(nrl, nrh, ncl, nch);
 	erosion3x3(X, O0,nrl,nrh,ncl,nch);
 	dilatation3x3(O0, Y, nrl, nrh, ncl, nch);
-	free_ui8matrix(O0, nrl-1, nrh+1, ncl-1, nch+1);
+	free_ui8matrix(O0, nrl, nrh, ncl, nch);
 }
 
 void erosion5x5(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
