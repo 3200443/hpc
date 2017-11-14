@@ -7,29 +7,9 @@
 #include "mouvement.h"
 #include "morpho.h"
 #define NBIMAGES 199
+#define BORD 2
 //I0 = It et I1 = It-1 : pareil pour tout
 
-
-
-void test_unitaire_FD()
-{
-    long nrl=0, nrh = 1, ncl = 0, nch = 7;
-    uint8 It[2][8]={{245, 216, 145, 196, 255, 0, 147, 196},{3, 220, 206, 42, 237, 135, 24, 87}};
-    uint8 Itm1[2][8]= {{235, 226, 134, 207, 255, 255, 138, 205},{84, 194, 135, 235, 177, 66, 212, 29}};
-    uint8 Et[2][8];
-
-    int nrow=nrh-nrl+1,ncol=nch-ncl+1;
-
-
-    uint8 Rep[2][8] = {{255, 255, 255, 255, 0, 255, 0, 0 },{255, 255, 255,255, 255,255, 255,255}};
-    for(int i = nrl; i <= nrh; i++ )
-	{
-		for(int j = ncl; j <= nch; j++)
-		{
-        }
-    }
-
-}
 
 
 
@@ -47,7 +27,7 @@ void test_routine_sigmaDelta()
 
     int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
-    uint8 **Et = ui8matrix(nrl, nrh, ncl, nch);
+    uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
 
 
     uint8 **Vt = ui8matrix(nrl, nrh, ncl, nch);
@@ -68,12 +48,16 @@ void test_routine_sigmaDelta()
 
         sprintf(nomImageSave,"car3Sigma/car_3%03d.pgm",i);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);//Copie de t a t-1
-        memcpy(Mtm1[nrl], Mt[nrl], sizeof(uint8)*(nrow*ncol));
+        copy_ui8matrix_ui8matrix(Mt, nrl, nrh, ncl, nch, Mtm1);
+        copy_ui8matrix_ui8matrix(Vt, nrl, nrh, ncl, nch, Vtm1);
+        copy_ui8matrix_ui8matrix(It, nrl, nrh, ncl, nch, Itm1);
+
+        /*memcpy(Mtm1[nrl], Mt[nrl], sizeof(uint8)*(nrow*ncol));
         memcpy(Vtm1[nrl], Vt[nrl], sizeof(uint8)*(nrow*ncol));
-        memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
+        memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));*/
 
     }
-    free_ui8matrix(Et, nrl, nrh, ncl, nch);
+    free_ui8matrix(Et, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
     free_ui8matrix(It, nrl, nrh, ncl, nch);
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch);
     free_ui8matrix(Vt, nrl, nrh, ncl, nch);
@@ -94,7 +78,7 @@ void test_routine_FrameDifference(int seuil)
     long nrl, nrh, ncl, nch;
     uint8 **Itm1 =  LoadPGM_ui8matrix("car3/car_3000.pgm", &nrl, &nrh, &ncl, &nch);
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **Et = ui8matrix(nrl, nrh, ncl, nch);
+    uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
 
     int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
@@ -106,12 +90,12 @@ void test_routine_FrameDifference(int seuil)
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame/car_3%03d.pgm", i);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
-        memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
+        copy_ui8matrix_ui8matrix(It, nrl, nrh, ncl, nch, Itm1);
     }
 
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
-    free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
 }
 
 
@@ -123,8 +107,8 @@ void test_routine_FrameDifferenceMorpho3x3ouverture(int seuil)
     long nrl, nrh, ncl, nch;
     uint8 **Itm1 =  LoadPGM_ui8matrix("car3/car_3000.pgm", &nrl, &nrh, &ncl, &nch);
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **Et = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **Et1 = ui8matrix(nrl, nrh, ncl, nch);
+    uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
+    uint8 **Et1 = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
     int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
     for(int i = 1; i <= NBIMAGES; i++)
@@ -134,14 +118,16 @@ void test_routine_FrameDifferenceMorpho3x3ouverture(int seuil)
 
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame3x3O/car_3%03d.pgm", i);
-        ouverture3x3(Et,Et1, nrl+1,nrh-1,ncl+1,nch-1);
+        ouverture3x3(Et,Et1, nrl,nrh,ncl,nch);
         SavePGM_ui8matrix(Et1, nrl, nrh, ncl, nch, nomImageSave);
-        memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
+        copy_ui8matrix_ui8matrix(It, nrl, nrh, ncl, nch, Itm1);
     }
 
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
-    free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
+    free_ui8matrix(Et1, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
+
 }
 
 void test_routine_FrameDifferenceMorpho3x3fermeture(int seuil)
@@ -152,8 +138,8 @@ void test_routine_FrameDifferenceMorpho3x3fermeture(int seuil)
     long nrl, nrh, ncl, nch;
     uint8 **Itm1 =  LoadPGM_ui8matrix("car3/car_3000.pgm", &nrl, &nrh, &ncl, &nch);
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **Et = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **Et1 = ui8matrix(nrl, nrh, ncl, nch);
+    uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
+    uint8 **Et1 = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
     int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
     for(int i = 1; i <= NBIMAGES; i++)
@@ -163,14 +149,16 @@ void test_routine_FrameDifferenceMorpho3x3fermeture(int seuil)
 
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame3x3F/car_3%03d.pgm", i);
-        fermeture3x3(Et,Et1, nrl+1,nrh-1,ncl+1,nch-1);
+        fermeture3x3(Et,Et1, nrl,nrh,ncl,nch);
         SavePGM_ui8matrix(Et1, nrl, nrh, ncl, nch, nomImageSave);
-        memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
+        copy_ui8matrix_ui8matrix(It, nrl, nrh, ncl, nch, Itm1);
     }
 
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
-    free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
+    free_ui8matrix(Et1, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
+
 }
 void test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(int seuil)
 {
@@ -180,8 +168,8 @@ void test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(int seuil)
     long nrl, nrh, ncl, nch;
     uint8 **Itm1 =  LoadPGM_ui8matrix("car3/car_3000.pgm", &nrl, &nrh, &ncl, &nch);
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **Et = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **Et1 = ui8matrix(nrl, nrh, ncl, nch);
+    uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
+    uint8 **Et1 = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
     int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
     for(int i = 1; i <= NBIMAGES; i++)
@@ -191,15 +179,17 @@ void test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(int seuil)
 
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame3x3OF/car_3%03d.pgm", i);
-        ouverture3x3(Et,Et1, nrl+1,nrh-1,ncl+1,nch-1);
-        fermeture3x3(Et1,Et, nrl+1,nrh-1,ncl+1,nch-1);
+        ouverture3x3(Et,Et1, nrl,nrh,ncl,nch);
+        fermeture3x3(Et1,Et, nrl,nrh,ncl,nch);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
-        memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
+        copy_ui8matrix_ui8matrix(It, nrl, nrh, ncl, nch, Itm1);
     }
 
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
-    free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
+    free_ui8matrix(Et1, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
+
 }
 
 void test_routine_FrameDifferenceMorpho3x3fermetureOuverture(int seuil)
@@ -210,8 +200,8 @@ void test_routine_FrameDifferenceMorpho3x3fermetureOuverture(int seuil)
     long nrl, nrh, ncl, nch;
     uint8 **Itm1 =  LoadPGM_ui8matrix("car3/car_3000.pgm", &nrl, &nrh, &ncl, &nch);
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **Et = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **Et1 = ui8matrix(nrl, nrh, ncl, nch);
+    uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
+    uint8 **Et1 = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
     int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
     for(int i = 1; i <= NBIMAGES; i++)
@@ -221,15 +211,17 @@ void test_routine_FrameDifferenceMorpho3x3fermetureOuverture(int seuil)
 
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame3x3FO/car_3%03d.pgm", i);
-        fermeture3x3(Et,Et1, nrl+1,nrh-1,ncl+1,nch-1);
-        ouverture3x3(Et1,Et, nrl+1,nrh-1,ncl+1,nch-1);
+        fermeture3x3(Et,Et1, nrl,nrh,ncl,nch);
+        ouverture3x3(Et1,Et, nrl,nrh,ncl,nch);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
-        memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
+        copy_ui8matrix_ui8matrix(It, nrl, nrh, ncl, nch, Itm1);
     }
 
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
-    free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
+    free_ui8matrix(Et1, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
+
 }
 
 void test_routine_FrameDifferenceMorpho3x3fermeturefermeture(int seuil)
@@ -240,8 +232,8 @@ void test_routine_FrameDifferenceMorpho3x3fermeturefermeture(int seuil)
     long nrl, nrh, ncl, nch;
     uint8 **Itm1 =  LoadPGM_ui8matrix("car3/car_3000.pgm", &nrl, &nrh, &ncl, &nch);
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **Et = ui8matrix(nrl, nrh, ncl, nch);
-    uint8 **Et1 = ui8matrix(nrl, nrh, ncl, nch);
+    uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
+    uint8 **Et1 = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
     int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
     for(int i = 1; i <= NBIMAGES; i++)
@@ -251,15 +243,17 @@ void test_routine_FrameDifferenceMorpho3x3fermeturefermeture(int seuil)
 
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame3x3FF/car_3%03d.pgm", i);
-        ouverture3x3(Et,Et1, nrl+1,nrh-1,ncl+1,nch-1);
-        fermeture3x3(Et1,Et, nrl+1,nrh-1,ncl+1,nch-1);
-        fermeture3x3(Et,Et1, nrl+1,nrh-1,ncl+1,nch-1);
-        fermeture3x3(Et1,Et, nrl+1,nrh-1,ncl+1,nch-1);
+        ouverture3x3(Et,Et1, nrl,nrh,ncl,nch);
+        fermeture3x3(Et1,Et, nrl,nrh,ncl,nch);
+        fermeture3x3(Et,Et1, nrl,nrh,ncl,nch);
+        fermeture3x3(Et1,Et, nrl,nrh,ncl,nch);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
-        memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));
+        copy_ui8matrix_ui8matrix(It, nrl, nrh, ncl, nch, Itm1);
     }
 
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
-    free_ui8matrix(Et, nrl, nrh, ncl, nch );
+    free_ui8matrix(Et, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
+    free_ui8matrix(Et1, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
+
 }

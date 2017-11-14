@@ -163,7 +163,7 @@ uint8** ui8matrix(long nrl, long nrh, long ncl, long nch)
 /* --------------------------------------------------- */
 /* allocate an uint8 matrix with subscript range m[nrl..nrh][ncl..nch] */
 {
-  long i, nrow=nrh-nrl+1,ncol=nch-ncl+1;
+  long i, j, nrow=nrh-nrl+1,ncol=nch-ncl+1;
   uint8 **m;
 
   /* allocate pointers to rows */
@@ -179,6 +179,10 @@ uint8** ui8matrix(long nrl, long nrh, long ncl, long nch)
   m[nrl] -= ncl;
 
   for(i=nrl+1;i<=nrh;i++) m[i]=m[i-1]+ncol;
+
+  for(i = nrl; i < nrh; i++)
+    for(j = ncl; j < nch; j++)
+      m[i][j]=0;
 
   /* return pointer to array of pointers to rows */
   return m;
