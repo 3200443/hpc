@@ -53,16 +53,18 @@ void MatSIMD2MatScal(vuint8 **vX1, uint8 **Itm1, int vi0, int vi1, int vj0, int 
     }
 }
 
+
+
 /*
 void test_unitaire_FD_SSE2()
 {
-	vuint8 tmpOt;
-	vuint8 pixelNoir = init_vuint8(0);
-	vuint8 pixelBlanc = init_vuint8(255);
-	vuint8 maxInt8 = init_vuint8(127);
-	//test seuil=20
-	vuint8 testMin1 = init_vuint8_all(130,       140,       130,         140,         130,         140,         255, 244, 24, 10, 163,  3,  18, 211, 15, 254);
-	vuint8 testMin2 = init_vuint8_all(110,       160,       109,         159,         111,         161,   0, 244,  2, 45, 146, 89, 145, 211, 48,   2);
+    vuint8 tmpOt;
+    vuint8 pixelNoir = init_vuint8(0);
+    vuint8 pixelBlanc = init_vuint8(255);
+    vuint8 maxInt8 = init_vuint8(127);
+    //test seuil=20
+    vuint8 testMin1 = init_vuint8_all(130,       140,       130,         140,         130,         140,         255, 244, 24, 10, 163,  3,  18, 211, 15, 254);
+    vuint8 testMin2 = init_vuint8_all(110,       160,       109,         159,         111,         161,   0, 244,  2, 45, 146, 89, 145, 211, 48,   2);
                                     // +seuil, -seuil, +seuil-1, -seuil-1, +seuil+1, -seuil+1, extremes, 0, lambda...
    vuint8 testOt = init_vuint8_all(  20,        20,        21,          19,          19,          21,         255,   0, 22, 35,  17, 86, 127,   0, 33, 252);
    //testcmplt pour seuil = 20;
@@ -92,50 +94,49 @@ void test_unitaire_FD_SSE2()
 
 void test_unitaire_FD_SSE2()
 {
-	vuint8 tmpOt;
-	vuint8 pixelNoir = init_vuint8(0);
-	vuint8 pixelBlanc = init_vuint8(255);
-   vuint8 maxInt8 = init_vuint8(128);
+    vuint8 tmpOt;
+    vuint8 pixelNoir = init_vuint8(0);
+    vuint8 pixelBlanc = init_vuint8(255);
+    vuint8 maxInt8 = init_vuint8(128);
 
-/*
-	//test seuil=20
-	vuint8 test1 = init_vuint8_all(    130, 140, 130, 140, 130, 140, 255, 244, 224,  10, 163,   3,  18, 211,  15, 254);
-	vuint8 test2 = init_vuint8_all(    110, 160, 109, 159, 111, 161,   0, 244,  96,  45, 146,  89, 145, 211,  48,   2);
-                                    // +seuil, -seuil, +seuil-1, -seuil-1, +seuil+1, -seuil+1, extremes, 0, lambda...
-   vuint8 testOt = init_vuint8_all(    20,  20,  21,  19,  19,  21, 255,   0, 128,  35,  17,  86, 127,   0,  33, 252);
-   //testcmplt pour seuil = 20;
-   vuint8 testcmplt = init_vuint8_all(255, 255, 255,   0,   0, 255, 255,   0, 255, 255,   0, 255, 255,   0, 255, 255);
-   vuint8 testSeuil = init_vuint8(20);
-*/
+    /*
+        //test seuil=20
+        vuint8 test1 = init_vuint8_all(    130, 140, 130, 140, 130, 140, 255, 244, 224,  10, 163,   3,  18, 211,  15, 254);
+        vuint8 test2 = init_vuint8_all(    110, 160, 109, 159, 111, 161,   0, 244,  96,  45, 146,  89, 145, 211,  48,   2);
+                                        // +seuil, -seuil, +seuil-1, -seuil-1, +seuil+1, -seuil+1, extremes, 0, lambda...
+       vuint8 testOt = init_vuint8_all(    20,  20,  21,  19,  19,  21, 255,   0, 128,  35,  17,  86, 127,   0,  33, 252);
+       //testcmplt pour seuil = 20;
+       vuint8 testcmplt = init_vuint8_all(255, 255, 255,   0,   0, 255, 255,   0, 255, 255,   0, 255, 255,   0, 255, 255);
+       vuint8 testSeuil = init_vuint8(20);
+    */
 
-   //test seuil=10
-   vuint8 test1 = init_vuint8_all(    130, 140, 130, 140, 130, 140, 255, 244, 224,  10, 163,   3,  18, 211,  15, 254);
-	vuint8 test2 = init_vuint8_all(    120, 150, 119, 149, 121, 151,   0, 244,  96,  45, 146,  89, 145, 211,  48,   2);
-   vuint8 testOt = init_vuint8_all(    10,  10,  11,   9,   9,  11, 255,   0, 128,  35,  17,  86, 127,   0,  33, 252);
-   vuint8 testcmplt = init_vuint8_all(  0,   0,   0, 255, 255,   0,   0, 255,   0,   0,   0,   0,   0, 255,   0,   0);
-   vuint8 testSeuil = init_vuint8(10);
+    //test seuil=10
+    vuint8 test1 = init_vuint8_all(    130, 140, 130, 140, 130, 140, 255, 244, 224,  10, 163,   3,  18, 211,  15, 254);
+    vuint8 test2 = init_vuint8_all(    120, 150, 119, 149, 121, 151,   0, 244,  96,  45, 146,  89, 145, 211,  48,   2);
+    vuint8 testOt = init_vuint8_all(    10,  10,  11,   9,   9,  11, 255,   0, 128,  35,  17,  86, 127,   0,  33, 252);
+    vuint8 testcmplt = init_vuint8_all(  0,   0,   0, 255, 255,   0,   0, 255,   0,   0,   0,   0,   0, 255,   0,   0);
+    vuint8 testSeuil = init_vuint8(10);
 
 
-   vuint8 minI = _mm_min_epu8(test1, test2);
-   vuint8 maxI = _mm_max_epu8(test1, test2);
+    vuint8 minI = _mm_min_epu8(test1, test2);
+    vuint8 maxI = _mm_max_epu8(test1, test2);
 
-   tmpOt = _mm_sub_epi8(maxI, minI);
-   display_vuint8(tmpOt, " %d ", "Ot    ");
-   printf("\n");
-   display_vuint8(testOt, " %d ", "Ot ref");
-   printf("\n");
+    tmpOt = _mm_sub_epi8(maxI, minI);
+    display_vuint8(tmpOt, " %d ", "Ot    ");
+    printf("\n");
+    display_vuint8(testOt, " %d ", "Ot ref");
+    printf("\n");
 
-   vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(testOt, maxInt8), _mm_sub_epi8(testSeuil, maxInt8)); //Met 255 si inferieur au seuil et 0 sinon
-   display_vuint8(res," %d ", "Res    ");
-   printf("\n");
-   display_vuint8(testcmplt, " %d ", "Res ref");
-   printf("\n");
+    vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(testOt, maxInt8), _mm_sub_epi8(testSeuil, maxInt8)); //Met 255 si inferieur au seuil et 0 sinon
+    display_vuint8(res," %d ", "Res    ");
+    printf("\n");
+    display_vuint8(testcmplt, " %d ", "Res ref");
+    printf("\n");
 
-   res = _mm_andnot_si128(res, pixelBlanc);
-   display_vuint8(res," %d ", "ResNot ");
-   printf("\n");
+    res = _mm_andnot_si128(res, pixelBlanc);
+    display_vuint8(res," %d ", "ResNot ");
+    printf("\n");
 }
-
 
 void test_unitaire_SD_SSE2()
 {
@@ -148,6 +149,7 @@ void test_unitaire_SD_SSE2()
 
     vuint8 maxSChar = init_vuint8(128);
 
+    printf("=========== Step 1 =========\n");
     display_vuint8(It," %d ","ItStep1");
     printf("\n");
     display_vuint8(Mtm1," %d ","Mtm1Step1");
@@ -168,6 +170,7 @@ void test_unitaire_SD_SSE2()
 
     printf("Resultat attendu de Mt\n: 128, 255, 0, 2, 254, 255, 51, 69, 50, 105, 18, 194, 7, 91, 155\n");
 
+    printf("\n\n ========== Step 2 =========\n\n");
 
 
 
@@ -202,7 +205,7 @@ void test_routine_FrameDifference_SSE2(int seuil)
     int nrow=vi1-vi0+1,ncol=vj1-vj0+1;
 
     vuint8 ** vXtm1 = vui8matrix_s(nrl, nrh, ncl, nch); //Creation d'une matrice SIMD avec les indices scalaires
-    vuint8 ** vXt = vui8matrix_s(nrl, nrh, ncl, nch);
+    vuint8 ** vXt = vui8matrix_s(nrl, nrh, ncl, nch); //vXt=(uint8**)It devrait fonctionner
     vuint8 ** vXEt = vui8matrix_s(nrl, nrh, ncl, nch);
     vuint8 seuilSIMD = init_vuint8(seuil); //Copie du seuil dans un vecteur SIMD
 

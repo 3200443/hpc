@@ -24,9 +24,6 @@ void test_routine_sigmaDelta()
     sprintf(nomImageLoad,"car3/car_3000.pgm");//Image a t-1
     uint8 **Itm1 =  LoadPGM_ui8matrix(nomImageLoad, &nrl, &nrh, &ncl, &nch);
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
-
-    int nrow=nrh-nrl+1,ncol=nch-ncl+1;
-
     uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
 
 
@@ -80,8 +77,6 @@ void test_routine_FrameDifference(int seuil)
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
     uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
 
-    int nrow=nrh-nrl+1,ncol=nch-ncl+1;
-
     for(int i = 1; i <= NBIMAGES; i++)
     {
         sprintf(nomImageLoad, "car3/car_3%03d.pgm", i);//Image a t
@@ -109,7 +104,6 @@ void test_routine_FrameDifferenceMorpho3x3ouverture(int seuil)
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
     uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
     uint8 **Et1 = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
-    int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
     for(int i = 1; i <= NBIMAGES; i++)
     {
@@ -140,7 +134,6 @@ void test_routine_FrameDifferenceMorpho3x3fermeture(int seuil)
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
     uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
     uint8 **Et1 = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
-    int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
     for(int i = 1; i <= NBIMAGES; i++)
     {
@@ -170,7 +163,6 @@ void test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(int seuil)
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
     uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
     uint8 **Et1 = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
-    int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
     for(int i = 1; i <= NBIMAGES; i++)
     {
@@ -202,7 +194,6 @@ void test_routine_FrameDifferenceMorpho3x3fermetureOuverture(int seuil)
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
     uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
     uint8 **Et1 = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
-    int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
     for(int i = 1; i <= NBIMAGES; i++)
     {
@@ -234,7 +225,6 @@ void test_routine_FrameDifferenceMorpho3x3fermeturefermeture(int seuil)
     uint8 **It = ui8matrix(nrl, nrh, ncl, nch);
     uint8 **Et = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
     uint8 **Et1 = ui8matrix(nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD);
-    int nrow=nrh-nrl+1,ncol=nch-ncl+1;
 
     for(int i = 1; i <= NBIMAGES; i++)
     {

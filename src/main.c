@@ -51,19 +51,18 @@ void differenceImageScal_SIMD()
 int main(int argc, char* argv[])
 {
 #if OPTI & 0x1
-    //test_routine_FrameDifference_SSE2(10);
-    //test_routine_sigmaDelta_SSE2();
-    test_routine_FrameDifference_SSE2M(10);
+    test_routine_FrameDifference_SSE2(20);
+    test_routine_sigmaDelta_SSE2();
+    test_routine_FrameDifference_SSE2M(20);
 #endif
 #if OPTI & 0x2
-    //test_routine_FrameDifference(10);
-    // test_routine_FrameDifferenceMorpho3x3ouverture(10);
-     test_routine_FrameDifferenceMorpho3x3fermeture(10);
-    //test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(10);
-    //test_routine_FrameDifferenceMorpho3x3fermetureOuverture(10);
-    //test_routine_FrameDifferenceMorpho3x3fermeturefermeture(10);
-    //test_routine_sigmaDelta();
-    //test_routine_sigmaDelta();
+    test_routine_FrameDifference(20);
+    // test_routine_FrameDifferenceMorpho3x3ouverture(20);
+     test_routine_FrameDifferenceMorpho3x3fermeture(20);
+    //test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(20);
+    //test_routine_FrameDifferenceMorpho3x3fermetureOuverture(20);
+    //test_routine_FrameDifferenceMorpho3x3fermeturefermeture(20);
+    test_routine_sigmaDelta();
 #endif
     //creation_matrices_ROC("verite/car_3165.pgm", "car3Frame3x3FO/car_3165.pgm");
     //differenceImageScal_SIMD();

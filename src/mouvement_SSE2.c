@@ -28,11 +28,13 @@ void routine_FrameDifference_SSE2(vuint8 **It, vuint8 **Itm1, vuint8 **Et, long 
             //Calcul de Ot, image de difference
             tmpIt = _mm_load_si128(&It[i][j]);
             tmpItm1 = _mm_load_si128(&Itm1[i][j]);
-            tmpOt = _mm_min_epu8(_mm_sub_epi8(tmpIt,tmpItm1), _mm_sub_epi8(tmpItm1, tmpIt) ); //min(a-b,b-a) donne la valeur absolue car on peut pas avoir de valeurs negatives
+            vuint8 max = _mm_max_epu8(tmpIt,tmpItm1);
+            vuint8 min = _mm_min_epu8(tmpIt, tmpItm1);
+            tmpOt = _mm_sub_epi8(max, min);
 
             //Si Ot < 0, on a 255, sinon 0 donc on inverse pour avoir 255 sur Et quand Ot>=0 et 0 pour Ot < 0
             vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpOt, maxSChar), _mm_sub_epi8(seuil, maxSChar)); //Met 1 si inferieur au seuil et 0 si superieur
-           
+
             res = _mm_andnot_si128(res, pixelBlanc);
             _mm_store_si128(&Et[i][j], res);
 
@@ -82,7 +84,7 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
         for(int j = vj0; j <= vj1; j++)
         {
 
-        	//Step1
+            //Step1
             tmpMtm1 = _mm_load_si128(&Mtm1[i][j]);
             tmpIt = _mm_load_si128(&It[i][j]);
             tmpVtm1 = _mm_load_si128(&Vtm1[i][j]);
@@ -98,9 +100,10 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
             tmpMt = _mm_or_si128(_mm_and_si128(res, Mtm1Moins1), _mm_andnot_si128(res, tmpMt)); // //Mtm1 > It
 
 
-            //Step 2 Calcul matrice difference |Mt-It| 
-            tmpOt = _mm_min_epu8(_mm_sub_epi8(tmpMt,tmpIt), _mm_sub_epi8(tmpIt, tmpMt) ); //min(a-b,b-a) donne la valeur absolue car on peut pas avoir de valeurs negatives
-            
+            //Step 2 Calcul matrice difference |Mt-It|
+            vuint8 max = _mm_max_epu8(tmpIt,tmpMt);
+            vuint8 min = _mm_min_epu8(tmpIt, tmpMt);
+            tmpOt = _mm_sub_epi8(max, min); //Le max - min donne la valeur absolue
             //Step 3 Vt Update and clamping
             for(int k = 0; k < N; k++)
             {
@@ -109,7 +112,7 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
 
             vuint8 Vtm1Plus1 = _mm_add_epi8(tmpVtm1, un);
             vuint8 Vtm1Moins1 = _mm_sub_epi8(tmpVtm1, un);
-           
+
             res = _mm_cmplt_epi8(_mm_sub_epi8(tmpVtm1, maxSChar), _mm_sub_epi8(NfoisOt, maxSChar));//On soustrait 128 car la comparaison est signee
             tmpVt = _mm_or_si128(_mm_and_si128(res, Vtm1Plus1), _mm_andnot_si128(res, tmpVtm1)); //Vtm1< N*Ot
 
@@ -119,7 +122,7 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
             tmpVt = _mm_max_epu8(_mm_min_epu8(tmpVt, VMAXSIMD), VMINSIMD);
 
             //Step 4: Et estimation
-             res = _mm_cmplt_epi8(_mm_sub_epi8(tmpOt,maxSChar), _mm_sub_epi8(tmpVt,maxSChar)); //Met 255 si inferieur a Vt et 0 si superieur
+            res = _mm_cmplt_epi8(_mm_sub_epi8(tmpOt,maxSChar), _mm_sub_epi8(tmpVt,maxSChar)); //Met 255 si inferieur a Vt et 0 si superieur
 
             vuint8 dest = _mm_andnot_si128(res, pixelBlanc);//Inverse les 255 et 0 pour avoir la bonne couleur de pixel
 
