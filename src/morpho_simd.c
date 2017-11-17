@@ -217,10 +217,8 @@ void dilatation3x3_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long
 
 	vuint8 result1,result2,result3;
 
-	vuint8 temp = init_vuint8(255);
+	vuint8 temp;
 	vuint8 left,right;
-
-	temp; //AND DONC 255 INVARIANT
 
 
 	//premiere ligne : prologue
@@ -359,10 +357,8 @@ void dilatation3x3_SIMD_B(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,lo
 
 	vuint8 result1,result2,result3;
 
-	vuint8 temp = init_vuint8(255);
+	vuint8 temp;
 	vuint8 left,right;
-
-	temp; //AND DONC 255 INVARIANT
 
 
 	//premiere ligne : prologue
@@ -466,18 +462,19 @@ void ouverture5x5_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long 
 	free_vui8matrix(vXVt,vi0-1, vi1+1, vj0-1, vj1+1);
 }
 
+/*
 void dilatation3x3_SIMD_BD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1)
 {
-	vuint8 l1;
-	vuint8 l2;
-	vuint8 l3;
+	vuint8 l11,l21,l31;
+	vuint8 l12,l22,l32;
+	vuint8 l13,l23,l33;
 
-	vuint8 result1,result2,result3;
+	vuint8 result11,result12,result13;
+	vuint8 result21,result22,result23;
+	vuint8 result31,result32,result33;
 
-	vuint8 temp = init_vuint8(255);
-	vuint8 left,right;
-
-	temp; //AND DONC 255 INVARIANT
+	vuint8 temp;
+	vuint8 left1,right1,left2,right2,left3,right3;
 
 
 	//premiere ligne : prologue
@@ -488,18 +485,24 @@ void dilatation3x3_SIMD_BD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,l
 	// corps de boucle
 	for(i;i<=vi1;i++)
 	{
-		l1 = _mm_load_si128(&It[i-1][j]);
-		l2 = _mm_load_si128(&It[i+0][j]);
-		l3 = _mm_load_si128(&It[i+1][j]);
+		l11 = _mm_load_si128(&It[i-1][j]);
+		l12 = _mm_load_si128(&It[i+0][j]);
+		l13 = _mm_load_si128(&It[i+1][j]);
+
+		temp =  _mm_or_si128(l11,l12);
+		result11 = _mm_or_si128(temp,l13);
+
+		left1 = _mm_slli_si128(result11,1);
+
+		l21 = _mm_load_si128(&It[i-1][j+1]);
+		l22 = _mm_load_si128(&It[i+0][j+1]);
+		l23 = _mm_load_si128(&It[i+1][j+1]);
 
 		temp =  _mm_or_si128(l1,l2);
 		result1 = _mm_or_si128(temp,l3);
 
 		left = _mm_slli_si128(result1,1);
 
-		//j vaut vj0 donc on insere un zero a gauche de right
-		//right = _mm_or_si128(right,or_droit);
-		
 		j++;
 		for(j;j<=vj1;j++)
 		{
@@ -532,3 +535,5 @@ void dilatation3x3_SIMD_BD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,l
 		j= vj0;
 	}
 }
+
+*/

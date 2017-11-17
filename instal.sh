@@ -14,3 +14,4 @@ mkdir car3FrameSIMD
 mkdir car3FrameSIMD_M
 mkdir car3Sigma
 mkdir car3SigmaSIMD
+make clean && make
