@@ -201,6 +201,9 @@ void zero_vsi32matrix(vsint32  **m, int i0, int i1, int j0, int j1);
 void zero_vui32matrix(vuint32  **m, int i0, int i1, int j0, int j1);
 void zero_vf32matrix (vfloat32 **m, int i0, int i1, int j0, int j1);
 
+void dup_vui8matrix(vuint8 **X, int i0, int i1, int j0, int j1, vuint8 **Y);
+
+
 #ifdef __cplusplus
 }
 #endif
