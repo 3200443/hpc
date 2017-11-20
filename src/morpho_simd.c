@@ -177,7 +177,7 @@ void erosion3x3_SIMD_B(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long 
 		//j vaut vj0 donc on insere un zero a gauche de right
 		
 		j++;
-		for(j;j<=vj1;j++)
+		for(j;j<=vj1;j++) //densité arithmétique de 2.5 : (10)/4
 		{
 			l1 = _mm_load_si128(&It[i-1][j]);
 			l2 = _mm_load_si128(&It[i+0][j]);
