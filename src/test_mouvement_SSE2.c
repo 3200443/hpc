@@ -9,6 +9,7 @@
 #include "morpho_simd.h"
 #include "mymacro.h"
 
+#define N 3
 #define NBIMAGES 199
 //I0 = It et I1 = It-1 : pareil pour tout
 
@@ -141,19 +142,20 @@ void test_unitaire_FD_SSE2()
 
 void test_unitaire_SD_SSE2()
 {
+    printf("\n\n\n");
     /*Test du step1*/
-    printf("Test Step 1 avec(Mtm1-It) \n127-128, 255-255, 0-0, 0-1, 1-0, 255-254, 254-255,50-60,70-45, 50-50, + Cas non critiques\n");
-    vuint8 Mtm1 = init_vuint8_all(127, 255, 0, 0, 1, 255, 254, 50, 70, 50, 104, 17, 195, 6, 90, 156);
-    vuint8 It = init_vuint8_all(128, 255, 0, 1, 0, 254, 255, 60, 45, 50, 133, 67, 149, 198, 191, 68);
+    //printf("Test Step 1 avec(Mtm1-It) \n127-128, 255-255, 0-0, 0-1, 1-0, 255-254, 254-255,50-60,70-45, 50-50, + Cas non critiques\n");
+    vuint8 Mtm1 = init_vuint8_all(127, 255, 0, 0, 1, 255, 254, 50, 70, 50, 104, 17, 195,   6,  90, 156);
+    vuint8 It = init_vuint8_all(  128, 255, 0, 1, 0, 254, 255, 60, 45, 50, 133, 67, 149, 198, 191, 68);
     vuint8 tmpMt;
     vuint8 un = init_vuint8(1);
 
     vuint8 maxSChar = init_vuint8(128);
 
     printf("=========== Step 1 =========\n");
-    display_vuint8(It," %d ","ItStep1");
+    display_vuint8(It," %d ","ItStep1\n");
     printf("\n");
-    display_vuint8(Mtm1," %d ","Mtm1Step1");
+    display_vuint8(Mtm1," %d ","Mtm1Step1\n");
     printf("\n");
 
 
@@ -166,12 +168,35 @@ void test_unitaire_SD_SSE2()
     res = _mm_cmpgt_epi8(_mm_sub_epi8(Mtm1, maxSChar), _mm_sub_epi8(It, maxSChar));
     tmpMt = _mm_or_si128(_mm_and_si128(res, Mtm1Moins1), _mm_andnot_si128(res, tmpMt)); // //Mtm1 > It
 
-    display_vuint8(tmpMt, " %d ","Mt");
+    display_vuint8(tmpMt, " %d ","Mt\n");
     printf("\n");
 
-    printf("Resultat attendu de Mt\n: 128, 255, 0, 2, 254, 255, 51, 69, 50, 105, 18, 194, 7, 91, 155\n");
+    printf("Resultat attendu de Mt:\n 128, 255, 0, 1, 0, 254, 255, 51, 69, 50, 105, 18, 194, 7, 91, 155\n");
 
     printf("\n\n ========== Step 2 =========\n\n");
+    It = init_vuint8_all(    130, 140, 130, 140, 130, 140, 255, 244, 224,  10, 163,   3,  18, 211,  15, 254);
+    tmpMt = init_vuint8_all(    120, 150, 119, 149, 121, 151,   0, 244,  96,  45, 146,  89, 145, 211,  48,   2);
+    vuint8 max = _mm_max_epu8(It,tmpMt);
+    vuint8 min = _mm_min_epu8(It, tmpMt);
+    vuint8 tmpOt = _mm_sub_epi8(max, min); //Le max - min donne la valeur absolue
+    display_vuint8(It," %d ","ItStep2\n");
+    printf("\n");
+    display_vuint8(tmpMt," %d ","MtStep2\n");
+    printf("\n");
+    display_vuint8(tmpOt, " %d ","OtStep2\n");
+    printf("\n");
+    printf( "Resultat attendu de Ot:\n 10, 10, 11, 9, 9, 11, 255, 0, 128, 35, 17, 86, 127, 0, 33, 252\n");
+
+
+    printf("\n\n ========== Step 3 =========\n\n");
+    tmpOt = init_vuint8_all(    120, 150, 119, 149, 121, 151,   0, 244,  96,  45, 146,  89, 145, 211,  48,   2);
+    vuint8 NfoisOt;
+    for(int k = 0; k < N; k++)
+    {
+        NfoisOt = _mm_adds_epi8(NfoisOt, tmpOt);
+    }
+
+
 
 
 
