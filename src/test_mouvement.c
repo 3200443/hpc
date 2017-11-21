@@ -5,6 +5,7 @@
 #include "nrdef.h"
 #include "nrutil.h"
 #include "mouvement.h"
+#include "mymacro.h"
 #include "morpho.h"
 #define NBIMAGES 199
 #define BORD 2
@@ -15,10 +16,24 @@
 
 void test_routine_sigmaDelta()
 {
+
+    /////////////// Pour le cycle par point////////////
+    double cycles;
+
+    char *format = "%6.2f \n";
+    double cycleTotal;
+    int iter, niter = 2;
+    int run, nrun = 5;
+    double t0, t1, dt, tmin, t;
+    ///////////////////////////////////////////////
+
+
+
     //m[nrl..nrh][ncl..nch]
     char nomImageLoad[50];// = "car3/car_3";
     char nomImageSave[50];// = "car3Sigma/car_3"
     long nrl, nrh, ncl, nch;
+
 
 
     sprintf(nomImageLoad,"car3/car_3000.pgm");//Image a t-1
@@ -39,8 +54,10 @@ void test_routine_sigmaDelta()
     {
         sprintf(nomImageLoad,"car3/car_3%03d.pgm",i);//Image a t
         MLoadPGM_ui8matrix(nomImageLoad, nrl, nrh, ncl, nch, It);
-        
-        routine_SigmaDelta_1step(It, Itm1, Vt, Vtm1, Mt, Mtm1, Et, nrl, nrh, ncl, nch);
+
+        //routine_SigmaDelta_1step(It, Itm1, Vt, Vtm1, Mt, Mtm1, Et, nrl, nrh, ncl, nch);
+        CHRONO(routine_SigmaDelta_1step(It, Itm1, Vt, Vtm1, Mt, Mtm1, Et, nrl, nrh, ncl, nch), cycles);
+        cycleTotal+=cycles;
         //routine_SigmaDelta_1stepO(It, Itm1, Vt, Vtm1, Mt, Mtm1, Et, nrl, nrh, ncl, nch); // Pas si vraiment optimisé que ca quand on compile avec -O3...
 
         sprintf(nomImageSave,"car3Sigma/car_3%03d.pgm",i);
@@ -54,6 +71,14 @@ void test_routine_sigmaDelta()
         memcpy(Itm1[nrl], It[nrl], sizeof(uint8)*(nrow*ncol));*/
 
     }
+
+    cycleTotal/=NBIMAGES;
+    cycleTotal/=((nch+1)*(nrh+1));
+    BENCH(printf("Cycles SD = "));
+    BENCH(printf(format, cycleTotal));
+
+
+
     free_ui8matrix(Et, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
     free_ui8matrix(It, nrl, nrh, ncl, nch);
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch);
@@ -62,14 +87,20 @@ void test_routine_sigmaDelta()
     free_ui8matrix(Mt, nrl, nrh, ncl, nch);
     free_ui8matrix(Mtm1, nrl, nrh, ncl, nch);
 
-
-
-
-
 }
 
 void test_routine_FrameDifference(int seuil)
 {
+    /////////////// Pour le cycle par point////////////
+    double cycles;
+
+    char *format = "%6.2f \n";
+    double cycleTotal;
+    int iter, niter = 2;
+    int run, nrun = 5;
+    double t0, t1, dt, tmin, t;
+    ///////////////////////////////////////////////
+
     char nomImageLoad[50];// = "car3/car_3";
     char nomImageSave[50];// = "car3Sigma/car_3"
     long nrl, nrh, ncl, nch;
@@ -81,12 +112,18 @@ void test_routine_FrameDifference(int seuil)
     {
         sprintf(nomImageLoad, "car3/car_3%03d.pgm", i);//Image a t
         MLoadPGM_ui8matrix(nomImageLoad, nrl, nrh, ncl, nch, It);
+        CHRONO(routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil), cycles);
+        cycleTotal+=cycles;
 
-        routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
+        //routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame/car_3%03d.pgm", i);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
         copy_ui8matrix_ui8matrix(It, nrl, nrh, ncl, nch, Itm1);
     }
+    cycleTotal/=NBIMAGES;
+    cycleTotal/=((nch+1)*(nrh+1));
+    BENCH(printf("Cycles FD = "));
+    BENCH(printf(format, cycleTotal));
 
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
@@ -96,7 +133,16 @@ void test_routine_FrameDifference(int seuil)
 
 void test_routine_FrameDifferenceMorpho3x3ouverture(int seuil)
 {
-    /*pour commit */
+
+/////////////// Pour le cycle par point////////////
+    double cycles;
+
+    char *format = "%6.2f \n";
+    double cycleTotal;
+    int iter, niter = 2;
+    int run, nrun = 5;
+    double t0, t1, dt, tmin, t;
+    ///////////////////////////////////////////////
     char nomImageLoad[50];// = "car3/car_3";
     char nomImageSave[50];// = "car3Sigma/car_3"
     long nrl, nrh, ncl, nch;
@@ -112,10 +158,19 @@ void test_routine_FrameDifferenceMorpho3x3ouverture(int seuil)
 
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame3x3O/car_3%03d.pgm", i);
-        ouverture3x3(Et,Et1, nrl,nrh,ncl,nch);
+        //ouverture3x3(Et,Et1, nrl,nrh,ncl,nch);
+        CHRONO(ouverture3x3(Et,Et1, nrl,nrh,ncl,nch), cycles);
+        cycleTotal+=cycles;
+
         SavePGM_ui8matrix(Et1, nrl, nrh, ncl, nch, nomImageSave);
         copy_ui8matrix_ui8matrix(It, nrl, nrh, ncl, nch, Itm1);
     }
+
+
+    cycleTotal/=NBIMAGES;
+    cycleTotal/=((nch+1)*(nrh+1));
+    BENCH(printf("Cycles Ouverture = "));
+    BENCH(printf(format, cycleTotal));
 
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
@@ -126,7 +181,16 @@ void test_routine_FrameDifferenceMorpho3x3ouverture(int seuil)
 
 void test_routine_FrameDifferenceMorpho3x3fermeture(int seuil)
 {
-    /*pour commit */
+
+/////////////// Pour le cycle par point////////////
+    double cycles;
+
+    char *format = "%6.2f \n";
+    double cycleTotal;
+    int iter, niter = 2;
+    int run, nrun = 5;
+    double t0, t1, dt, tmin, t;
+    ///////////////////////////////////////////////
     char nomImageLoad[50];// = "car3/car_3";
     char nomImageSave[50];// = "car3Sigma/car_3"
     long nrl, nrh, ncl, nch;
@@ -142,10 +206,18 @@ void test_routine_FrameDifferenceMorpho3x3fermeture(int seuil)
 
         routine_FrameDifference(It, Itm1, Et, nrl,nrh,ncl,nch, seuil);
         sprintf(nomImageSave, "car3Frame3x3F/car_3%03d.pgm", i);
-        fermeture3x3(Et,Et1, nrl,nrh,ncl,nch);
+        //fermeture3x3(Et,Et1, nrl,nrh,ncl,nch);
+        CHRONO(fermeture3x3(Et,Et1, nrl,nrh,ncl,nch), cycles);
+        cycleTotal+=cycles;
+
         SavePGM_ui8matrix(Et1, nrl, nrh, ncl, nch, nomImageSave);
         copy_ui8matrix_ui8matrix(It, nrl, nrh, ncl, nch, Itm1);
     }
+
+    cycleTotal/=NBIMAGES;
+    cycleTotal/=((nch+1)*(nrh+1));
+    BENCH(printf("Cycles Fermeture = "));
+    BENCH(printf(format, cycleTotal));
 
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );

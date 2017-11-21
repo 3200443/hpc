@@ -7,6 +7,7 @@
 #include "mouvement_SSE2.h"
 #include "morpho.h"
 #include "morpho_simd.h"
+#include "mymacro.h"
 
 #define NBIMAGES 199
 //I0 = It et I1 = It-1 : pareil pour tout
@@ -190,6 +191,18 @@ void test_unitaire_SD_SSE2()
 
 void test_routine_FrameDifference_SSE2(int seuil)
 {
+
+    /////////////// Pour le cycle par point////////////
+    double cycles;
+
+    char *format = "%6.2f \n";
+    double cycleTotal;
+    int iter, niter = 2;
+    int run, nrun = 5;
+    double t0, t1, dt, tmin, t;
+    ///////////////////////////////////////////////
+
+
     char nomImageLoad[50];// = "car3/car_3";
     char nomImageSave[50];// = "car3Sigma/car_3"
     long nrl, nrh, ncl, nch;
@@ -218,12 +231,23 @@ void test_routine_FrameDifference_SSE2(int seuil)
         MLoadPGM_ui8matrix(nomImageLoad, nrl, nrh, ncl, nch, It);
         MatScal2MatSIMD(vIt, It,  vi0, vi1, vj0, vj1);
 
-        routine_FrameDifference_SSE2(vIt, vItm1, vEt, vi0, vi1, vj0, vj1, seuilSIMD);
+        //routine_FrameDifference_SSE2(vIt, vItm1, vEt, vi0, vi1, vj0, vj1, seuilSIMD);
+        CHRONO(routine_FrameDifference_SSE2(vIt, vItm1, vEt, vi0, vi1, vj0, vj1, seuilSIMD), cycles);
+        cycleTotal+=cycles;
+
         MatSIMD2MatScal(vEt, Et, vi0, vi1, vj0, vj1);    //On fait la copie d'une matrice SIMD dans une image normale
         sprintf(nomImageSave, "car3FrameSIMD/car_3%03d.pgm", i);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
         dup_vui8matrix(vIt, vi0, vi1, vj0, vj1, vItm1);
     }
+
+
+    cycleTotal/=NBIMAGES;
+    cycleTotal/=((nch+1)*(nrh+1));
+    BENCH(printf("Cycles FD_SSE2 = "));
+    BENCH(printf(format, cycleTotal));
+
+
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
     free_ui8matrix(Et, nrl, nrh, ncl, nch );
@@ -238,6 +262,17 @@ void test_routine_FrameDifference_SSE2(int seuil)
 
 void test_routine_FrameDifference_SSE2M(int seuil)
 {
+    /////////////// Pour le cycle par point////////////
+    double cycles;
+
+    char *format = "%6.2f \n";
+    double cycleTotal;
+    int iter, niter = 2;
+    int run, nrun = 5;
+    double t0, t1, dt, tmin, t;
+    ///////////////////////////////////////////////
+
+
     char nomImageLoad[50];// = "car3/car_3";
     char nomImageSave[50];// = "car3Sigma/car_3"
     long nrl, nrh, ncl, nch;
@@ -275,13 +310,22 @@ void test_routine_FrameDifference_SSE2M(int seuil)
         //
         //dilatation3x3_SIMD_B(vEt,vEt1,vi0,vi1,vj0,vj1);
         //erosion3x3_SIMD_B(vEt1,vEt2,vi0,vi1,vj0,vj1);
-        fermeture3x3_SIMD(vEt,vEt1,vi0,vi1,vj0,vj1);
+        //fermeture3x3_SIMD(vEt,vEt1,vi0,vi1,vj0,vj1);
+        CHRONO(fermeture3x3_SIMD(vEt,vEt1,vi0,vi1,vj0,vj1), cycles);
+        cycleTotal+=cycles;
         //
         MatSIMD2MatScal(vEt1, Et, vi0, vi1, vj0, vj1);    //On fait la copie d'une matrice SIMD dans une image normale
         sprintf(nomImageSave, "car3FrameSIMD_M/car_3%03d.pgm", i);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
         memcpy(vItm1[vi0], vIt[vi0], sizeof(vuint8)*(nrow*ncol));
     }
+
+    cycleTotal/=NBIMAGES;
+    cycleTotal/=((nch+1)*(nrh+1));
+    BENCH(printf("Cycles FD_SSE2Morpho = "));
+    BENCH(printf(format, cycleTotal));
+
+
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
     free_ui8matrix(Et, nrl, nrh, ncl, nch );
@@ -299,6 +343,20 @@ void test_routine_FrameDifference_SSE2M(int seuil)
 
 void test_routine_sigmaDelta_SSE2()
 {
+
+
+    /////////////// Pour le cycle par point////////////
+    double cycles;
+
+    char *format = "%6.2f \n";
+    double cycleTotal;
+    int iter, niter = 2;
+    int run, nrun = 5;
+    double t0, t1, dt, tmin, t;
+    ///////////////////////////////////////////////
+
+
+
     char nomImageLoad[50];// = "car3/car_3";
     char nomImageSave[50];// = "car3Sigma/car_3"
     long nrl, nrh, ncl, nch;
@@ -333,7 +391,11 @@ void test_routine_sigmaDelta_SSE2()
         MLoadPGM_ui8matrix(nomImageLoad, nrl, nrh, ncl, nch, It);
         MatScal2MatSIMD(vIt, It,  vi0, vi1, vj0, vj1);
 
-        routine_SigmaDelta_1stepSSE2(vIt, vItm1, vVt, vVtm1, vMt, vMtm1, vEt, vi0, vi1, vj0, vj1);
+        //routine_SigmaDelta_1stepSSE2(vIt, vItm1, vVt, vVtm1, vMt, vMtm1, vEt, vi0, vi1, vj0, vj1);
+        CHRONO(routine_SigmaDelta_1stepSSE2(vIt, vItm1, vVt, vVtm1, vMt, vMtm1, vEt, vi0, vi1, vj0, vj1), cycles);
+        cycleTotal+=cycles;
+
+
         MatSIMD2MatScal(vEt, Et, vi0, vi1, vj0, vj1);    //On fait la copie d'une matrice SIMD dans une image normale
         sprintf(nomImageSave, "car3SigmaSIMD/car_3%03d.pgm", i);
         SavePGM_ui8matrix(Et, nrl, nrh, ncl, nch, nomImageSave);
@@ -344,6 +406,14 @@ void test_routine_sigmaDelta_SSE2()
 
 
     }
+
+    cycleTotal/=NBIMAGES;
+    cycleTotal/=((nch+1)*(nrh+1));
+    BENCH(printf("Cycles SD_SSE2 = "));
+    BENCH(printf(format, cycleTotal));
+
+
+
     free_ui8matrix(It, nrl, nrh, ncl, nch );
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
     free_ui8matrix(Et, nrl, nrh, ncl, nch );
