@@ -21,7 +21,7 @@ void test_routine_sigmaDelta()
     double cycles;
 
     char *format = "%6.2f \n";
-    double cycleTotal;
+    double cycleTotal = 0;
     int iter, niter = 2;
     int run, nrun = 5;
     double t0, t1, dt, tmin, t;
@@ -95,7 +95,7 @@ void test_routine_FrameDifference(int seuil)
     double cycles;
 
     char *format = "%6.2f \n";
-    double cycleTotal;
+    double cycleTotal = 0;
     int iter, niter = 2;
     int run, nrun = 5;
     double t0, t1, dt, tmin, t;
@@ -138,7 +138,7 @@ void test_routine_FrameDifferenceMorpho3x3ouverture(int seuil)
     double cycles;
 
     char *format = "%6.2f \n";
-    double cycleTotal;
+    double cycleTotal = 0;
     int iter, niter = 2;
     int run, nrun = 5;
     double t0, t1, dt, tmin, t;
@@ -186,7 +186,7 @@ void test_routine_FrameDifferenceMorpho3x3fermeture(int seuil)
     double cycles;
 
     char *format = "%6.2f \n";
-    double cycleTotal;
+    double cycleTotal = 0;
     int iter, niter = 2;
     int run, nrun = 5;
     double t0, t1, dt, tmin, t;
