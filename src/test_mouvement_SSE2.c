@@ -221,7 +221,7 @@ void test_routine_FrameDifference_SSE2(int seuil)
     double cycles;
 
     char *format = "%6.2f \n";
-    double cycleTotal;
+    double cycleTotal = 0;
     int iter, niter = 2;
     int run, nrun = 5;
     double t0, t1, dt, tmin, t;
@@ -291,7 +291,7 @@ void test_routine_FrameDifference_SSE2M(int seuil)
     double cycles;
 
     char *format = "%6.2f \n";
-    double cycleTotal;
+    double cycleTotal = 0;
     int iter, niter = 2;
     int run, nrun = 5;
     double t0, t1, dt, tmin, t;
@@ -374,7 +374,7 @@ void test_routine_sigmaDelta_SSE2()
     double cycles;
 
     char *format = "%6.2f \n";
-    double cycleTotal;
+    double cycleTotal = 0;
     int iter, niter = 2;
     int run, nrun = 5;
     double t0, t1, dt, tmin, t;
