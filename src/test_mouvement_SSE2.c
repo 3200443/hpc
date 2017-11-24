@@ -317,7 +317,8 @@ void test_routine_FrameDifference_SSE2M(int seuil)
     vuint8 ** vIt = vui8matrix_s(nrl, nrh, ncl, nch);
     vuint8 ** vEt = vui8matrix_s(nrl-1, nrh+1, ncl-1, nch+1);
     //
-    vuint8 ** vEt1 = vui8matrix_s(nrl-1, nrh+1, ncl-1, nch+1);
+    //vuint8 ** vEt1 = vui8matrix_s(nrl-1, nrh+1, ncl-1, nch+1);
+    vuint8 ** vEt1 = vui8matrix_s(nrl, nrh, ncl, nch);
     vuint8 ** vEt2 = vui8matrix_s(nrl-1, nrh+1, ncl-1, nch+1);
     //
     vuint8 seuilSIMD = init_vuint8(seuil); //Copie du seuil dans un vecteur SIMD
@@ -335,9 +336,9 @@ void test_routine_FrameDifference_SSE2M(int seuil)
         //
         //dilatation3x3_SIMD_B(vEt,vEt1,vi0,vi1,vj0,vj1);
         //erosion3x3_SIMD_B(vEt1,vEt2,vi0,vi1,vj0,vj1);
-        //fermeture3x3_SIMD(vEt,vEt1,vi0,vi1,vj0,vj1);
-        CHRONO(fermeture3x3_SIMD(vEt,vEt1,vi0,vi1,vj0,vj1), cycles);
-        cycleTotal+=cycles;
+        fermeture3x3_SIMD(vEt,vEt1,vi0,vi1,vj0,vj1);
+        //CHRONO(fermeture3x3_SIMD(vEt,vEt1,vi0,vi1,vj0,vj1), cycles);
+        //cycleTotal+=cycles;
         //
         MatSIMD2MatScal(vEt1, Et, vi0, vi1, vj0, vj1);    //On fait la copie d'une matrice SIMD dans une image normale
         sprintf(nomImageSave, "car3FrameSIMD_M/car_3%03d.pgm", i);
@@ -358,7 +359,8 @@ void test_routine_FrameDifference_SSE2M(int seuil)
     free_vui8matrix(vIt, vi0, vi1, vj0, vj1);
     free_vui8matrix(vEt, vi0-1, vi1+1, vj0-1, vj1+1);
     //
-    free_vui8matrix(vEt1, vi0-1, vi1+1, vj0-1, vj1+1);
+    //free_vui8matrix(vEt1, vi0-1, vi1+1, vj0-1, vj1+1);
+    free_vui8matrix(vEt1, vi0, vi1, vj0, vj1);
     free_vui8matrix(vEt2, vi0-1, vi1+1, vj0-1, vj1+1);
     //
 

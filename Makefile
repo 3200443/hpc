@@ -1,7 +1,7 @@
 FILE = main.c $(normal) $(SSE2) $(ROC)
 
 normal = morpho.c mouvement.c nrutil.c test_mouvement.c vnrutil.c 
-SSE2 = test_mouvement_SSE2.c mouvement_SSE2.c morpho_simd.c
+SSE2 = test_mouvement_SSE2.c mouvement_SSE2.c morpho_simd.c test_morpho.c
 ROC = matric_roc.c
 
 # -- Paths ----------
