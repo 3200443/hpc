@@ -9,8 +9,10 @@
 #include "morpho_simd.h"
 #include "mymacro.h"
 
-#define N 3
+#define N 2
 #define NBIMAGES 199
+#define VMIN 20
+#define VMAX 240
 //I0 = It et I1 = It-1 : pareil pour tout
 
 void MatScal2MatSIMD(vuint8 **vX1, uint8 **Itm1, int vi0, int vi1, int vj0, int vj1)
@@ -189,12 +191,61 @@ void test_unitaire_SD_SSE2()
 
 
     printf("\n\n ========== Step 3 =========\n\n");
-    tmpOt = init_vuint8_all(    120, 150, 119, 149, 121, 151,   0, 244,  96,  45, 146,  89, 145, 211,  48,   2);
-    vuint8 NfoisOt;
+    tmpOt = init_vuint8_all(0, 1, 100, 127, 128, 255, 2, 244,  96,  45, 146,  89, 145, 211,  48,   9);
+    vuint8 NfoisOt = init_vuint8(0);
     for(int k = 0; k < N; k++)
     {
-        NfoisOt = _mm_adds_epi8(NfoisOt, tmpOt);
+        NfoisOt = _mm_adds_epu8(NfoisOt, tmpOt);
     }
+    display_vuint8(tmpOt, " %d ","OtStep3\n");
+    printf("\n");
+    display_vuint8(NfoisOt, " %d ","2*OtStep3\n");
+    printf("\n");
+
+    printf("Resultat attendu de NfoisOt:\n 0, 2, 200, 254, 255, 255, 4, 255, 192, 90, 255, 178, 255, 255, 96, 18\n");
+
+    printf("\n\n ========== Step 3 Clamping =========\n\n");
+
+    vuint8 VMAXSIMD = init_vuint8(VMAX);
+    vuint8 VMINSIMD = init_vuint8(VMIN);
+    vuint8 tmpVt = init_vuint8_all(0, 1, 5, 19, 20, 21, 22, 239,  240,  241, 255,  127, 128, 129,  130,   126);
+
+    vuint8 tmpResVt = _mm_max_epu8(_mm_min_epu8(tmpVt, VMAXSIMD), VMINSIMD);
+
+    display_vuint8(tmpVt, " %d ","VtStep3Avant\n");
+    printf("\n");
+
+    display_vuint8(tmpResVt, " %d ","VtStep3Apres\n");
+    printf("\n");
+    //VMIN = 20 et VMAX = 240 A 240 pour verifier que le max est correctement fait
+
+    printf("Resultat attendu de Vt:\n 20, 20, 20, 20, 20, 21, 22, 239, 240, 240, 240, 127, 128, 129, 130, 126\n");
+
+
+    printf("\n\n ========== Step 4 =========\n\n");
+
+    vuint8 pixelBlanc = init_vuint8(255);
+    tmpOt = init_vuint8_all(0, 127, 128, 128, 127, 10, 49, 255,    0,  230, 25,  147, 145, 255,  254,   126);
+    tmpVt = init_vuint8_all(0, 128, 127, 128, 127, 50, 50,   0,  255,  241, 135,  127, 144, 254,  255,   125);
+    res = _mm_cmplt_epi8(_mm_sub_epi8(tmpOt, maxSChar), _mm_sub_epi8(tmpVt, maxSChar)); //Met 255 si inferieur au seuil et 0 sinon
+    res = _mm_andnot_si128(res, pixelBlanc);
+
+    display_vuint8(tmpOt," %d ", " OtStep4\n");
+    printf("\n");
+    display_vuint8(tmpVt, " %d ", "VtStep4\n");
+    printf("\n");
+
+    display_vuint8(res," %d ", "Et\n");
+    printf("\n");
+
+    printf("Resultat attendu de Et:\n 255, 0, 255, 255, 255, 0, 0, 255, 0, 0, 0, 255, 255, 255, 0, 255\n");
+
+
+
+
+
+
+
 
 
 
