@@ -58,8 +58,8 @@ int main(int argc, char* argv[])
     test_routine_FrameDifference_SSE2M(20);
 #endif
 #if OPTI & 0x2 //Partie sclaire
-    //test_routine_FrameDifference(20);
-    //test_routine_sigmaDelta();
+    test_routine_FrameDifference(20);
+    test_routine_sigmaDelta();
 
     //test_routine_FrameDifferenceMorpho3x3ouverture(20);
     //test_routine_FrameDifferenceMorpho3x3fermeture(20);
