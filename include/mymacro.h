@@ -10,7 +10,7 @@
 
 #define ZERO zero_f32matrix(Z, 0, n-1, 0, n-1)
 
-//#define ENABLE_BENCHMARK
+#define ENABLE_BENCHMARK
 
 // -------------------------------------------
 // -- ne rien ecrire en dessous de cette ligne
