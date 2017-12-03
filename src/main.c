@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
     //test_routine_FrameDifferenceMorpho3x3fermetureOuverture(20);
     //test_routine_FrameDifferenceMorpho3x3fermeturefermeture(20);
 #endif
-    //creation_matrices_ROC("verite/car_3165.pgm", "car3Frame3x3FO/car_3165.pgm");
+    creation_matrices_ROC("verite/car_3165.pgm", "car3Frame/car_3165.pgm");
     differenceImageScal_SIMD();
     //test_unitaire_SD_SSE2();
 

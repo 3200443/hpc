@@ -24,8 +24,10 @@ void creation_matrices_ROC(char fichierVerite[], char fichierTest[])
             else if(ImageTest[i][j] == 0 && ImageVerite[i][j] == 255)
                 matRoc[1][0]+=1; //FP
             else if(ImageTest[i][j] == 0 && ImageVerite[i][j] == 0)
-                matRoc[1][1]+=1;
+                matRoc[1][1]+=1; //VN
         }
     }
+    double rapport = 1.0*(matRoc[0][0]+matRoc[1][1])/(matRoc[0][1]+matRoc[1][0]);
     printf("Matrice ROC = \n%d %d\n%d %d\n",matRoc[0][0], matRoc[0][1], matRoc[1][0], matRoc[1][1]);
+    printf("Rapport = %d/%d = %f",matRoc[1][1]+matRoc[0][0], matRoc[0][1]+matRoc[1][0],rapport);
 }
