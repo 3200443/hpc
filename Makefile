@@ -1,7 +1,7 @@
 FILE = main.c $(normal) $(SSE2) $(ROC)
 
 normal = morpho.c mouvement.c nrutil.c test_mouvement.c vnrutil.c 
-SSE2 = test_mouvement_SSE2.c mouvement_SSE2.c morpho_simd.c
+SSE2 = test_mouvement_SSE2.c mouvement_SSE2.c morpho_simd.c test_morpho.c
 ROC = matric_roc.c
 
 # -- Paths ----------
@@ -11,7 +11,7 @@ OBJ_PATH = obj
 INC_PATH = include
 
 # -- Flags ----------
-C_DEBUG_FLAGS = -g -O3
+C_DEBUG_FLAGS = -g -O3 -std=c11
 C_ARCH_FLAGS = -msse4.2
 C_INC_FLAGS = -I$(INC_PATH)
 
