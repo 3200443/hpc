@@ -104,6 +104,7 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
             vuint8 max = _mm_max_epu8(tmpIt,tmpMt);
             vuint8 min = _mm_min_epu8(tmpIt, tmpMt);
             tmpOt = _mm_sub_epi8(max, min); //Le max - min donne la valeur absolue
+            
             //Step 3 Vt Update and clamping
             for(int k = 0; k < N; k++)
             {

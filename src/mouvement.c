@@ -36,19 +36,18 @@ void routine_FrameDifference(uint8 **It, uint8 **Itm1, uint8 **Et, long nrl,long
 {
     //m[nrl..nrh][ncl..nch]
 
-	uint8 **Ot = ui8matrix(nrl, nrh, ncl, nch);
+	uint8 Ot;
 	for(int i = nrl; i <= nrh; i++ )
 	{
 		for(int j = ncl; j <= nch; j++)
 		{
-			Ot[i][j] = abs(It[i][j] - Itm1[i][j]);
-			if(Ot[i][j] < seuil)
+			Ot = abs(It[i][j] - Itm1[i][j]);
+			if(Ot < seuil)
 				Et[i][j] = 0;
 			else
 				Et[i][j] = 255;
 		}
 	}
-	free_ui8matrix(Ot, nrl, nrh, ncl, nch);
 }
 
 void routine_SigmaDelta_step0(uint8** I, uint8 **M, uint8 **V, long nrl, long nrh, long ncl, long nch)
@@ -63,54 +62,55 @@ void routine_SigmaDelta_step0(uint8** I, uint8 **M, uint8 **V, long nrl, long nr
     }
 }
 
-void routine_SigmaDelta_1step(uint8 **It, uint8 **Itm1, uint8**Vt, uint8 **Vtm1, uint8**Mt, uint8 **Mtm1, uint8 **Et,  long nrl, long nrh, long ncl, long nch )
+void routine_SigmaDelta_1step(uint8 **It, uint8**Vt, uint8 **Vtm1, uint8**Mt, uint8 **Mtm1, uint8 **Et,  long nrl, long nrh, long ncl, long nch )
 {
-	uint8 **Ot = ui8matrix(nrl, nrh, ncl, nch);
-	uint8 tmpMtm1, tmpVtm1;
+	uint8 Ot;
+	uint8 tmpMtm1, tmpVtm1, tmpIt, tmpMt, tmpVt;
     for(int i = nrl; i <= nrh; i++ ) //Step1 Mt Estimation
     {
     	for(int j = ncl; j <= nch; j++)
     	{
     		tmpMtm1 = Mtm1[i][j];
     		tmpVtm1 = Vtm1[i][j];
+    		tmpIt = It[i][j];
 
-    		if(tmpMtm1 < It[i][j])
-    			Mt[i][j]  = tmpMtm1 + 1;
+    		if(tmpMtm1 < tmpIt)
+    			tmpMt  = tmpMtm1 + 1;
 
-    		else if(tmpMtm1 > It[i][j])
-    			Mt[i][j] = tmpMtm1 - 1;
+    		else if(tmpMtm1 > tmpIt)
+    			tmpMt = tmpMtm1 - 1;
 
     		else
-    			Mt[i][j] = tmpMtm1;
+    			tmpMt = tmpMtm1;
 
 
     		//Step 2 difference Computation
-    		Ot[i][j] = abs(Mt[i][j] - It[i][j]);
+    		Ot = abs(tmpMt - tmpIt);
 
 
     		//Step 3 Update and clamping
-    		if(tmpVtm1 < N * Ot[i][j])
-    			Vt[i][j] = tmpVtm1 + 1;
+    		if(tmpVtm1 < N * Ot)
+    			tmpVt = tmpVtm1 + 1;
 
-    		else if(tmpVtm1 > N * Ot[i][j])
-    			Vt[i][j] = tmpVtm1 - 1;
+    		else if(tmpVtm1 > N * Ot)
+    			tmpVt = tmpVtm1 - 1;
 
     		else
-    			Vt[i][j] = tmpVtm1;
+    			tmpVt = tmpVtm1;
 
-
-    		Vt[i][j] = max( min(Vt[i][j], VMAX), VMIN);
+    		tmpVt = max( min(tmpVt, VMAX), VMIN);
 
 
     		//Step 4 Et estimation
-    		if(Ot[i][j] < Vt[i][j])
+    		if(Ot < tmpVt)
     			Et[i][j] = 0;
     		else
     			Et[i][j] = 255;
+
+    		Mt[i][j] = tmpMt;
+    		Vt[i][j] = tmpVt;
     	}
     }
-
-    free_ui8matrix(Ot, nrl, nrh, ncl, nch);
 
 }
 

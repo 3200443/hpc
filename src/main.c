@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 #endif
     //creation_matrices_ROC("verite/car_3165.pgm", "car3Frame3x3FO/car_3165.pgm");
     differenceImageScal_SIMD();
-    test_unitaire_SD_SSE2();
+    //test_unitaire_SD_SSE2();
 
     return 0;
 }
