@@ -8,7 +8,7 @@
 #include "vnrutil.h"
 
 #define N 2
-#define VMIN 2
+#define VMIN 17
 #define VMAX 255 //V est entre 2 et 2^m-1 avec m le nombre de bits des donnees ici 8 => https://hal.inria.fr/hal-01130889/document
 
 

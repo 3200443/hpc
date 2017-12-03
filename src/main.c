@@ -52,22 +52,22 @@ void differenceImageScal_SIMD()
 int main(int argc, char* argv[])
 {
 #if OPTI & 0x1
-    test_routine_FrameDifference_SSE2(20);
+    test_routine_FrameDifference_SSE2(16);
     test_routine_sigmaDelta_SSE2();
-    test_routine_FrameDifference_SSE2M(20);
+    test_routine_FrameDifference_SSE2M(16);
 #endif
 #if OPTI & 0x2
-    test_routine_FrameDifference(20);
+    test_routine_FrameDifference(16);
     test_routine_sigmaDelta();
 
-    test_routine_FrameDifferenceMorpho3x3ouverture(20);
-    test_routine_FrameDifferenceMorpho3x3fermeture(20);
+    test_routine_FrameDifferenceMorpho3x3ouverture(16);
+    test_routine_FrameDifferenceMorpho3x3fermeture(16);
     //test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(20);
     //test_routine_FrameDifferenceMorpho3x3fermetureOuverture(20);
     //test_routine_FrameDifferenceMorpho3x3fermeturefermeture(20);
 #endif
-    creation_matrices_ROC("car3SigmaSIMD");
-    differenceImageScal_SIMD();
+    creation_matrices_ROC("car3Frame");
+    //differenceImageScal_SIMD();
     //test_unitaire_SD_SSE2();
 
     return 0;
