@@ -8,9 +8,8 @@
 #include "vnrutil.h"
 
 #define N 2
-#define VMIN 20
+#define VMIN 2
 #define VMAX 255 //V est entre 2 et 2^m-1 avec m le nombre de bits des donnees ici 8 => https://hal.inria.fr/hal-01130889/document
-#define VINI 35
 
 
 void routine_FrameDifference_SSE2(vuint8 **It, vuint8 **Itm1, vuint8 **Et, long vi0,long vi1,long vj0,long vj1, vuint8 seuil)
@@ -49,7 +48,7 @@ void routine_SigmaDelta_step0SSE2(vuint8** I, vuint8 **M, vuint8 **V, long vi0, 
     vuint8 tmpM;
     vuint8 tmpV;
     vuint8 tmpI;
-    vuint8 ecartTypeIni = init_vuint8(VINI);
+    vuint8 ecartTypeIni = init_vuint8(VMIN);
     for(int i = vi0; i <= vi1; i++ )
     {
         for(int j = vj0; j <= vj1; j++)
@@ -57,7 +56,7 @@ void routine_SigmaDelta_step0SSE2(vuint8** I, vuint8 **M, vuint8 **V, long vi0, 
 
             tmpI = _mm_load_si128(&I[i][j]); //M[i][j] = I[i][j];
             _mm_store_si128(&M[i][j], tmpI);
-            _mm_store_si128(&V[i][j], ecartTypeIni);    //V[i][j] = VINI; //Au depart a VMIN mais il y avait beaucoup de mouvement des le debut, a 10 ça marche mieux
+            _mm_store_si128(&V[i][j], ecartTypeIni);    //V[i][j] = VMIN; //Au depart a VMIN mais il y avait beaucoup de mouvement des le debut, a 10 ça marche mieux
         }
     }
 }

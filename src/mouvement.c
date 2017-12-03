@@ -8,9 +8,8 @@
 #include "nrutil.h"
 
 #define N 2
-#define VMIN 20
+#define VMIN 35
 #define VMAX 255 //V est entre 2 et 2^m-1 avec m le nombre de bits des donnees ici 8 => https://hal.inria.fr/hal-01130889/document
-#define VINI 35
 
 __attribute__ ((always_inline))int inline minO(int a, int b)
 {
@@ -57,7 +56,7 @@ void routine_SigmaDelta_step0(uint8** I, uint8 **M, uint8 **V, long nrl, long nr
 		for(int j = ncl; j <= nch; j++)
 		{
 			M[i][j] = I[i][j];
-            V[i][j] = VINI; //Au depart a VMIN mais il y avait beaucoup de mouvement des le debut, a VINI ça marche mieux
+            V[i][j] = VMIN; 
         }
     }
 }
