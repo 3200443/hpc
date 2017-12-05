@@ -28,9 +28,9 @@ void creation_matrices_ROC(char nomDossier[])
         	{
         		if(ImageTest[i][j] == 255 && ImageVerite[i][j] == 255)
                     matRoc[0][0]+=1; //VP
-                else if(ImageTest[i][j] == 255 && ImageVerite[i][j] == 0)
-                    matRoc[0][1]+=1; //FN
                 else if(ImageTest[i][j] == 0 && ImageVerite[i][j] == 255)
+                    matRoc[0][1]+=1; //FN
+                else if(ImageTest[i][j] == 255 && ImageVerite[i][j] == 0)
                     matRoc[1][0]+=1; //FP
                 else if(ImageTest[i][j] == 0 && ImageVerite[i][j] == 0)
                     matRoc[1][1]+=1; //VN

@@ -245,15 +245,6 @@ void test_unitaire_SD_SSE2()
 
 
 
-
-
-
-
-
-
-
-
-
     /*vuint8 pixelNoir = init_vuint8(0);
     vuint8 pixelBlanc = init_vuint8(255);
     vuint8 tmpEt;

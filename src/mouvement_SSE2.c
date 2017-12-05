@@ -8,7 +8,7 @@
 #include "vnrutil.h"
 
 #define N 2
-#define VMIN 17
+#define VMIN 20
 #define VMAX 255 //V est entre 2 et 2^m-1 avec m le nombre de bits des donnees ici 8 => https://hal.inria.fr/hal-01130889/document
 
 
@@ -78,6 +78,10 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
     //255 devient 128, 128 => 0 et 0 => -128
     //Si on ne fait pas ca, on a 128 < 128 qui est faux
 
+    vuint8 Mtm1Plus1, Mtm1Moins1;
+	vuint8 NfoisOt;
+	vuint8 res;
+	vuint8 Vtm1Plus1, Vtm1Moins1;
     for(int i = vi0; i <= vi1; i++ )
     {
         for(int j = vj0; j <= vj1; j++)
@@ -88,11 +92,11 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
             tmpIt = _mm_load_si128(&It[i][j]);
             tmpVtm1 = _mm_load_si128(&Vtm1[i][j]);
 
-            vuint8 Mtm1Plus1 = _mm_add_epi8(tmpMtm1, un);
-            vuint8 Mtm1Moins1 = _mm_sub_epi8(tmpMtm1, un);
-            vuint8 NfoisOt = init_vuint8(0);
+            Mtm1Plus1 = _mm_add_epi8(tmpMtm1, un);
+            Mtm1Moins1 = _mm_sub_epi8(tmpMtm1, un);
+            NfoisOt = init_vuint8(0);
 
-            vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(tmpMtm1, maxSChar), _mm_sub_epi8(tmpIt, maxSChar));
+            res = _mm_cmplt_epi8(_mm_sub_epi8(tmpMtm1, maxSChar), _mm_sub_epi8(tmpIt, maxSChar));
             tmpMt = _mm_or_si128(_mm_and_si128(res, Mtm1Plus1), _mm_andnot_si128(res, tmpMtm1)); //Mtm1< It
 
             res = _mm_cmpgt_epi8(_mm_sub_epi8(tmpMtm1, maxSChar), _mm_sub_epi8(tmpIt, maxSChar));
@@ -110,8 +114,8 @@ void routine_SigmaDelta_1stepSSE2(vuint8 **It, vuint8 **Itm1, vuint8**Vt, vuint8
                 NfoisOt = _mm_adds_epu8(NfoisOt, tmpOt);
             }
 
-            vuint8 Vtm1Plus1 = _mm_add_epi8(tmpVtm1, un);
-            vuint8 Vtm1Moins1 = _mm_sub_epi8(tmpVtm1, un);
+            Vtm1Plus1 = _mm_add_epi8(tmpVtm1, un);
+           	Vtm1Moins1 = _mm_sub_epi8(tmpVtm1, un);
 
             res = _mm_cmplt_epi8(_mm_sub_epi8(tmpVtm1, maxSChar), _mm_sub_epi8(NfoisOt, maxSChar));//On soustrait 128 car la comparaison est signee
             tmpVt = _mm_or_si128(_mm_and_si128(res, Vtm1Plus1), _mm_andnot_si128(res, tmpVtm1)); //Vtm1< N*Ot
