@@ -106,7 +106,7 @@ void test_routine_FrameDifferenceMorpho3x3ouverture(int seuil)
 
 }
 
-void convFormatToBin(uint8 ** EtAvant, long **EtApres, long nrl, long nrh, long ncl, long nch)
+void convFormatToBin(uint8 ** EtAvant, ulong32 **EtApres, long nrl, long nrh, long ncl, long nch)
 {
     int i, j, k ;
     for (i = nrl; i <= nrh; i++)
@@ -128,7 +128,7 @@ void convFormatToBin(uint8 ** EtAvant, long **EtApres, long nrl, long nrh, long 
     }
 }
 
-void convFormatToChar(long ** EtAvant, uint8 **EtApres, long nrl, long nrh, long ncl, long nch)
+void convFormatToChar(ulong32 ** EtAvant, uint8 **EtApres, long nrl, long nrh, long ncl, long nch)
 {
     int i, j, k ;
     int val;

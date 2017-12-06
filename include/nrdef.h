@@ -9,7 +9,7 @@
 #include <stdint.h>
 
 typedef unsigned char byte;
-typedef unsigned long ulong32;
+typedef uint32_t ulong32;
 
 typedef          char  int8;
 typedef unsigned char uint8;
