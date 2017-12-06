@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
 
 
 #endif
-    creation_matrices_ROC(argv[1]);
+   // creation_matrices_ROC(argv[1]);
    // difference2Images();
 //    test_unitaire_SD_SSE2();
 
