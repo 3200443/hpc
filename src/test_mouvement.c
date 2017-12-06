@@ -129,5 +129,3 @@ void test_routine_FrameDifference(int seuil)
     free_ui8matrix(Itm1, nrl, nrh, ncl, nch );
     free_ui8matrix(Et, nrl-BORD, nrh+BORD, ncl-BORD, nch+BORD );
 }
-
-

@@ -15,3 +15,9 @@ void erosion5x5_SIMD_B(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long 
 void dilatation5x5_SIMD_B(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1);
 void fermeture5x5_SIMD_B(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1);
 void ouverture5x5_SIMD_B(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1);
+
+
+
+void dilatation3x3_SIMD_F(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1);
+void erosion3x3_SIMD_F(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1);
+void fermeture3x3_SIMD_F(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj1);
