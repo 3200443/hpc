@@ -56,32 +56,29 @@ void difference2Images()
 int main(int argc, char* argv[])
 {
 #if OPTI & 0x1
-    test_routine_FrameDifference_SSE2(16);
+    test_routine_FrameDifference_SSE2(20);
     test_routine_sigmaDelta_SSE2();
-    test_routine_FrameDifference_SSE2M(16);
+    test_routine_FrameDifference_SSE2M(20);
 
 #endif
 #if OPTI & 0x2
-    test_routine_FrameDifference(16);
+    test_routine_FrameDifference(20);
     test_routine_sigmaDelta();
 
-    test_routine_FrameDifferenceMorpho3x3ouverture(16);
-    test_routine_FrameDifferenceMorpho3x3fermeture(16);
-    test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(16);
-    test_routine_FrameDifferenceMorpho3x3fermetureOuverture(16);
-    test_routine_FrameDifferenceMorpho3x3fermeturefermeture(16);
-    test_routine_FrameDifferenceMorpho3x3ouverture_pipe(16);
-    test_routine_FrameDifferenceMorpho3x3fermeture_pipe(16);
-    test_routine_FrameDifferenceMorpho3x3ouverture_bin(16);
-    test_routine_FrameDifferenceMorpho3x3fermeture_bin(16);
+    test_routine_FrameDifferenceMorpho3x3ouverture(20);
+    test_routine_FrameDifferenceMorpho3x3fermeture(20);
+    test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(20);
+    test_routine_FrameDifferenceMorpho3x3fermetureOuverture(20);
+    test_routine_FrameDifferenceMorpho3x3fermeturefermeture(20);
+    test_routine_FrameDifferenceMorpho3x3ouverture_pipe(20);
+    test_routine_FrameDifferenceMorpho3x3fermeture_pipe(20);
+    test_routine_FrameDifferenceMorpho3x3ouverture_bin(20);
+    test_routine_FrameDifferenceMorpho3x3fermeture_bin(20);
 
 
 #endif
     // creation_matrices_ROC(argv[1]);
     //difference2Images();
-//    test_unitaire_SD_SSE2();
 
-    /*ulong32 test = 1 << 31;
-    printf("%lu et %lu", test, test>>1);*/
     return 0;
 }
