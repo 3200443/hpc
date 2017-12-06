@@ -1,0 +1,7 @@
+Cycles FD_SSE2 =   0.61 
+Cycles SD_SSE2 =   3.86 
+Cycles FermetureSSE2 =   1.58 
+Cycles FD =  13.69 
+Cycles SD =  39.62 
+Cycles Ouverture =  23.62 
+Cycles Fermeture =  22.88 
