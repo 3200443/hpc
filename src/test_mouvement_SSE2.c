@@ -340,9 +340,9 @@ void test_routine_FrameDifference_SSE2M(int seuil)
         //
         //dilatation3x3_SIMD_B(vEt,vEt1,vi0,vi1,vj0,vj1);
         //erosion3x3_SIMD_B(vEt1,vEt2,vi0,vi1,vj0,vj1);
-        fermeture3x3_SIMD_F(vEt,vEt1,vi0,vi1,vj0,vj1);
-        //CHRONO(fermeture3x3_SIMD(vEt,vEt1,vi0,vi1,vj0,vj1), cycles);
-        //cycleTotal+=cycles;
+        //fermeture3x3_SIMD_F(vEt,vEt1,vi0,vi1,vj0,vj1);
+        CHRONO(fermeture3x3_SIMD_F(vEt,vEt1,vi0,vi1,vj0,vj1), cycles);
+        BENCH(cycleTotal+=cycles);
         //
         MatSIMD2MatScal(vEt1, Et, vi0, vi1, vj0, vj1);    //On fait la copie d'une matrice SIMD dans une image normale
         sprintf(nomImageSave, "car3FrameSIMD_M/car_3%03d.pgm", i);
@@ -350,10 +350,10 @@ void test_routine_FrameDifference_SSE2M(int seuil)
         memcpy(vItm1[vi0], vIt[vi0], sizeof(vuint8)*(nrow*ncol));
     }
 
-    // cycleTotal/=NBIMAGES;
-    // cycleTotal/=((nch+1)*(nrh+1));
-    // BENCH(printf("Cycles FermetureSSE2 = "));
-    // BENCH(printf(format, cycleTotal));
+     BENCH(cycleTotal/=NBIMAGES);
+     BENCH(cycleTotal/=((nch+1)*(nrh+1)));
+     BENCH(printf("Cycles FermetureSSE2 = "));
+     BENCH(printf(format, cycleTotal));
 
 
     free_ui8matrix(It, nrl, nrh, ncl, nch );

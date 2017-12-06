@@ -7,6 +7,7 @@
 #define __NR_DEF_H__
 
 #include <stdint.h>
+#define TLONG 32
 
 typedef unsigned char byte;
 typedef uint32_t ulong32;

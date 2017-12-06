@@ -13,7 +13,6 @@
 #include "morpho.h"
 #define NBIMAGES 199
 #define BORD 2
-#define TLONG 32
 
 
 void test_morpho3x3simd()

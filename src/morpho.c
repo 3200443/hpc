@@ -7,7 +7,6 @@
 #include "nrdef.h"
 #include "nrutil.h"
 #define BORD 2
-#define TLONG 32
 
 void erosion3x3(uint8** X,uint8** Y, long nrl,long nrh,long ncl,long nch)
 {

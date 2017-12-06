@@ -14,34 +14,34 @@ void difference2Images()
 {
 
     long nrl, nrh, ncl, nch;
-    uint8 **ItNonSIMD = LoadPGM_ui8matrix("car3/car_3000.pgm", &nrl, &nrh, &ncl, &nch);
-    uint8 **ItSIMD =  ui8matrix(nrl, nrh, ncl, nch);;
+    uint8 **ItImage1 = LoadPGM_ui8matrix("car3/car_3000.pgm", &nrl, &nrh, &ncl, &nch);
+    uint8 **ItImage2 =  ui8matrix(nrl, nrh, ncl, nch);;
     uint8 **ItNormal = ui8matrix(nrl, nrh, ncl, nch);
-    char nomImageLoadNonSIMD[100];//Pour initialiser nrl, etc
-    char nomImageLoadSIMD[100];
+    char nomImage1[100];//Pour initialiser nrl, etc
+    char nonImage2[100];
     char nomImageLoadNormal[100];
 
 
     for(int i = 1; i <= NBIMAGES; i++)
     {
-//        sprintf(nomImageLoadNonSIMD,"car3Sigma/car_3%03d.pgm",i);//Image a t
-//        sprintf(nomImageLoadSIMD,"car3SigmaSIMD/car_3%03d.pgm",i);//Image a t
+//        sprintf(nomImage1,"car3Sigma/car_3%03d.pgm",i);//Image a t
+//        sprintf(nonImage2,"car3SigmaSIMD/car_3%03d.pgm",i);//Image a t
 //        sprintf(nomImageLoadNormal,"car3/car_3%03d.pgm",i);//Image a t
-        sprintf(nomImageLoadNonSIMD,"car3Frame3x3O_pipe/car_3%03d.pgm",i);//Image a t
-        sprintf(nomImageLoadSIMD,"car3Frame3x3O_bin/car_3%03d.pgm",i);//Image a t
+        sprintf(nomImage1,"car3Frame3x3O/car_3%03d.pgm",i);//Image a t
+        sprintf(nonImage2,"car3Frame3x3O_pipe/car_3%03d.pgm",i);//Image a t
         sprintf(nomImageLoadNormal,"car3/car_3%03d.pgm",i);//Image a t
 
-        MLoadPGM_ui8matrix(nomImageLoadNonSIMD, nrl, nrh, ncl, nch, ItNonSIMD);
-        MLoadPGM_ui8matrix(nomImageLoadSIMD, nrl, nrh, ncl, nch, ItSIMD);
+        MLoadPGM_ui8matrix(nomImage1, nrl, nrh, ncl, nch, ItImage1);
+        MLoadPGM_ui8matrix(nonImage2, nrl, nrh, ncl, nch, ItImage2);
         MLoadPGM_ui8matrix(nomImageLoadNormal, nrl, nrh, ncl, nch, ItNormal);
 
         for(int k = nrl; k <= nrh; k++)
         {
             for(int l = ncl; l <= nch; l++)
             {
-                if(ItNonSIMD[k][l] != ItSIMD[k][l])
+                if(ItImage1[k][l] != ItImage2[k][l])
                 {
-                    printf("Probleme ! i = %d, j = %d, ItSIMD = %d, image = %d\n",k, l, ItSIMD[k][l], i);
+                    printf("Probleme ! i = %d, j = %d, ItImage2 = %d, image = %d\n",k, l, ItImage2[k][l], i);
                 }
             }
         }
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 #if OPTI & 0x1
     test_routine_FrameDifference_SSE2(16);
     test_routine_sigmaDelta_SSE2();
-    //test_routine_FrameDifference_SSE2M(16);
+    test_routine_FrameDifference_SSE2M(16);
 
 #endif
 #if OPTI & 0x2
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 
 #endif
     // creation_matrices_ROC(argv[1]);
-    difference2Images();
+    //difference2Images();
 //    test_unitaire_SD_SSE2();
 
     /*ulong32 test = 1 << 31;
