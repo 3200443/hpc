@@ -77,7 +77,7 @@ void erosion3x3_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj
 		left = _mm_slli_si128(result1,1);
 
 		//j vaut vj0 donc on insere un zero a gauche de right
-		
+
 		j++;
 		for(j;j<=vj1;j++)
 		{
@@ -118,7 +118,7 @@ void erosion3x3_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long vj
 	left = _mm_slli_si128(result1,1);
 
 	//j vaut vj0 donc on insere un zero a gauche de right
-	
+
 	j++;
 	for(j;j<=vj1;j++)
 	{
@@ -175,7 +175,7 @@ void erosion3x3_SIMD_B(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long 
 		left = _mm_slli_si128(result1,1);
 
 		//j vaut vj0 donc on insere un zero a gauche de right
-		
+
 		j++;
 		for(j;j<=vj1;j++) //densité arithmétique de 2.5 : (10)/4
 		{
@@ -277,7 +277,7 @@ void dilatation3x3_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long
 
 		//j vaut vj0 donc on insere un zero a gauche de right
 		//right = _mm_or_si128(right,or_droit);
-		
+
 		j++;
 		for(j;j<=vj1;j++)
 		{
@@ -318,7 +318,7 @@ void dilatation3x3_SIMD(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,long
 	left = _mm_slli_si128(result1,1);
 
 	//j vaut vj0 donc on insere un zero a gauche de right
-	
+
 	j++;
 	for(j;j<=vj1;j++)
 	{
@@ -365,7 +365,7 @@ void dilatation3x3_SIMD_B(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,lo
 	int j = vj0;
 	int i = vi0;
 
-	
+
 	// corps de boucle
 	for(i;i<=vi1;i++)
 	{
@@ -380,7 +380,7 @@ void dilatation3x3_SIMD_B(vuint8 **It,vuint8 **It1,long vi0,long vi1,long vj0,lo
 
 		//j vaut vj0 donc on insere un zero a gauche de right
 		//right = _mm_or_si128(right,or_droit);
-		
+
 		j++;
 		for(j;j<=vj1;j++)
 		{

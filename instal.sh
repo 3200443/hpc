@@ -14,4 +14,8 @@ mkdir car3FrameSIMD
 mkdir car3FrameSIMD_M
 mkdir car3Sigma
 mkdir car3SigmaSIMD
+mkdir car3Frame3x3O_pipe
+mkdir car3Frame3x3F_pipe
+mkdir car3Frame3x3F_bin
+mkdir car3Frame3x3O_bin
 make clean && make

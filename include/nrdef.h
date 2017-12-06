@@ -7,6 +7,7 @@
 #define __NR_DEF_H__
 
 typedef unsigned char byte;
+typedef unsigned long ulong32;
 
 typedef          char  int8;
 typedef unsigned char uint8;
