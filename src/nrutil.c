@@ -187,6 +187,36 @@ uint8** ui8matrix(long nrl, long nrh, long ncl, long nch)
   /* return pointer to array of pointers to rows */
   return m;
 }
+
+/* --------------------------------------------------- */
+ulong32** long64matrix(long nrl, long nrh, long ncl, long nch)
+/* --------------------------------------------------- */
+/* allocate an uint8 matrix with subscript range m[nrl..nrh][ncl..nch] */
+{
+  long i, j, nrow=nrh-nrl+1,ncol=nch-ncl+1;
+  ulong32 **m;
+
+  /* allocate pointers to rows */
+  m=(ulong32 **) malloc((size_t)((nrow+NR_END)*sizeof(ulong32 *)));
+  if (!m) nrerror("allocation failure 1 in ui8matrix()");
+  m += NR_END;
+  m -= nrl;
+
+  /* allocate rows and set pointers to them */
+  m[nrl]=(ulong32 *) malloc((size_t)((nrow*ncol+NR_END)*sizeof(ulong32)));
+  if (!m[nrl]) nrerror("allocation failure 2 in ui8matrix()");
+  m[nrl] += NR_END;
+  m[nrl] -= ncl;
+
+  for(i=nrl+1;i<=nrh;i++) m[i]=m[i-1]+ncol;
+
+  for(i = nrl; i < nrh; i++)
+    for(j = ncl; j < nch; j++)
+      m[i][j]=0;
+
+  /* return pointer to array of pointers to rows */
+  return m;
+}
 /* --------------------------------------------------- */
 sint8** si8matrix(long nrl, long nrh, long ncl, long nch)
 /* --------------------------------------------------- */
@@ -407,6 +437,14 @@ void free_f64vector(float64 *v, long nl, long nh)
 /* free a double vector allocated with f64vector() */
 {
   free((FREE_ARG) (v+nl-NR_END));
+}
+
+/* ---------------------------------------------------------------- */
+void free_long64matrix(ulong32 **m, long nrl, long nrh, long ncl, long nch)
+/* ---------------------------------------------------------------- */
+{
+  free((FREE_ARG) (m[nrl]+ncl-NR_END));
+  free((FREE_ARG) (m+nrl-NR_END));
 }
 /* ---------------------------------------------------------------- */
 void free_ui8matrix(uint8 **m, long nrl, long nrh, long ncl, long nch)
