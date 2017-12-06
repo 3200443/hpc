@@ -58,44 +58,6 @@ void MatSIMD2MatScal(vuint8 **vX1, uint8 **Itm1, int vi0, int vi1, int vj0, int 
 }
 
 
-
-/*
-void test_unitaire_FD_SSE2()
-{
-    vuint8 tmpOt;
-    vuint8 pixelNoir = init_vuint8(0);
-    vuint8 pixelBlanc = init_vuint8(255);
-    vuint8 maxInt8 = init_vuint8(127);
-    //test seuil=20
-    vuint8 testMin1 = init_vuint8_all(130,       140,       130,         140,         130,         140,         255, 244, 24, 10, 163,  3,  18, 211, 15, 254);
-    vuint8 testMin2 = init_vuint8_all(110,       160,       109,         159,         111,         161,   0, 244,  2, 45, 146, 89, 145, 211, 48,   2);
-                                    // +seuil, -seuil, +seuil-1, -seuil-1, +seuil+1, -seuil+1, extremes, 0, lambda...
-   vuint8 testOt = init_vuint8_all(  20,        20,        21,          19,          19,          21,         255,   0, 22, 35,  17, 86, 127,   0, 33, 252);
-   //testcmplt pour seuil = 20;
-   vuint8 testcmplt = init_vuint8_all(0,          0,         0,        255,         255,           0,           0, 255,  0,  0, 255,  0,   0, 255,  0,   0);
-   vuint8 testSeuil = init_vuint8(20);
-
-   tmpOt = _mm_min_epu8(_mm_sub_epi8(testMin1,testMin2), _mm_sub_epi8(testMin2, testMin1) ); //min(a-b,b-a) donne la valeur absolue car on peut pas avoir de valeurs negatives
-   display_vuint8(tmpOt, " %d ", "Min");
-   printf("\n");
-   display_vuint8(testOt, " %d ", "Ce qu'on doit avoir");
-   printf("\n");
-
-   vuint8 res = _mm_cmplt_epi8(_mm_sub_epi8(testOt, maxInt8), _mm_sub_epi8(testSeuil, maxInt8)); //Met 255 si inferieur au seuil et 0 sinon
-   display_vuint8(testSeuil, " %d ", "Seuil");
-   printf("\n");
-   display_vuint8(res," %d ", "Res");
-   printf("\n");
-   display_vuint8(testcmplt, " %d ", "Ce qu'on doit avoir");
-   printf("\n");
-
-   res = _mm_andnot_si128(res, pixelBlanc);
-   display_vuint8(res," %d ", "ResNot");
-   printf("\n");
-
-}
-*/
-
 void test_unitaire_FD_SSE2()
 {
     vuint8 tmpOt;
