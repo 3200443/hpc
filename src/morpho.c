@@ -45,7 +45,7 @@ void erosion3x3_bin(ulong32** X,ulong32** Y, long bi0,long bi1,long bj0,long bj1
             result&=X[i+1][j];
 
             left = (X[i-1][j-1] & X[i][j-1] & X[i+1][j-1]);
-            left = (result >> 1) | ((left & 1) << (TLONG-1));
+            left = ( (result >> 1) & ~(1<<TLONG-1) ) | (left & 1) << (TLONG-1);
 
             right = (X[i-1][j+1] & X[i][j+1] & X[i+1][j+1]);
             right = (result << 1) | (right>>(TLONG-1) & 1) ;
@@ -93,7 +93,7 @@ void dilatation3x3_bin(ulong32** X,ulong32** Y, long bi0,long bi1,long bj0,long 
             result|=X[i+1][j];
 
             left = (X[i-1][j-1] | X[i][j-1] | X[i+1][j-1]);
-            left = (result >> 1) | (left & 1) << (TLONG-1);
+            left = ( (result >> 1) & ~(1<<TLONG-1) ) | (left & 1) << (TLONG-1);
 
             right = (X[i-1][j+1] | X[i][j+1] | X[i+1][j+1]);
             right = (result << 1) | (right>>(TLONG-1) & 1) ;

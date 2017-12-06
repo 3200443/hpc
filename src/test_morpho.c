@@ -172,9 +172,9 @@ void test_routine_FrameDifferenceMorpho3x3ouverture_bin(int seuil)
 
 
     long bi0 = nrl, bi1 = nrh, bj0 = ncl/TLONG, bj1 = nch/TLONG;
-    long **EtBin = long64matrix(bi0 - BORD, bi1 + BORD, bj0 - 1, bj1 + 1);//Ajout de bords et allocation de matrice etiquette binaire
-    long **Et1Bin = long64matrix(bi0 - BORD, bi1 + BORD, bj0 - 1, bj1 + 1);
-    long **O0 =  long64matrix(bi0 - BORD, bi1 + BORD, bj0 - 1, bj1 + 1);
+    ulong32 **EtBin = long64matrix(bi0 - BORD, bi1 + BORD, bj0 - 1, bj1 + 1);//Ajout de bords et allocation de matrice etiquette binaire
+    ulong32 **Et1Bin = long64matrix(bi0 - BORD, bi1 + BORD, bj0 - 1, bj1 + 1);
+    ulong32 **O0 =  long64matrix(bi0 - BORD, bi1 + BORD, bj0 - 1, bj1 + 1);
 
     for(int i = 1; i <= NBIMAGES; i++)
     {
@@ -233,9 +233,9 @@ void test_routine_FrameDifferenceMorpho3x3fermeture_bin(int seuil)
 
 
     long bi0 = nrl, bi1 = nrh, bj0 = ncl/TLONG, bj1 = nch/TLONG;
-    long **EtBin = long64matrix(bi0 - BORD, bi1 + BORD, bj0 - 1, bj1 + 1);//Ajout de bords et allocation de matrice etiquette binaire
-    long **Et1Bin = long64matrix(bi0 - BORD, bi1 + BORD, bj0 - 1, bj1 + 1);
-    long **O0 =  long64matrix(bi0 - BORD, bi1 + BORD, bj0 - 1, bj1 + 1);
+    ulong32 **EtBin = long64matrix(bi0 - BORD, bi1 + BORD, bj0 - 1, bj1 + 1);//Ajout de bords et allocation de matrice etiquette binaire
+    ulong32 **Et1Bin = long64matrix(bi0 - BORD, bi1 + BORD, bj0 - 1, bj1 + 1);
+    ulong32 **O0 =  long64matrix(bi0 - BORD, bi1 + BORD, bj0 - 1, bj1 + 1);
 
     for(int i = 1; i <= NBIMAGES; i++)
     {

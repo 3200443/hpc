@@ -6,6 +6,8 @@
 #ifndef __NR_DEF_H__
 #define __NR_DEF_H__
 
+#include <stdint.h>
+
 typedef unsigned char byte;
 typedef unsigned long ulong32;
 

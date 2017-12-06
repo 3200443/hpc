@@ -62,23 +62,23 @@ int main(int argc, char* argv[])
 
 #endif
 #if OPTI & 0x2
-    test_routine_FrameDifference(16);
-    test_routine_sigmaDelta();
+//    test_routine_FrameDifference(16);
+//    test_routine_sigmaDelta();
 //
-    test_routine_FrameDifferenceMorpho3x3ouverture(16);
-    test_routine_FrameDifferenceMorpho3x3fermeture(16);
-    test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(16);
-    test_routine_FrameDifferenceMorpho3x3fermetureOuverture(16);
-    test_routine_FrameDifferenceMorpho3x3fermeturefermeture(16);
-    test_routine_FrameDifferenceMorpho3x3ouverture_pipe(16);
-    test_routine_FrameDifferenceMorpho3x3fermeture_pipe(16);
+//    test_routine_FrameDifferenceMorpho3x3ouverture(16);
+//    test_routine_FrameDifferenceMorpho3x3fermeture(16);
+//    test_routine_FrameDifferenceMorpho3x3ouvertureFermeture(16);
+//    test_routine_FrameDifferenceMorpho3x3fermetureOuverture(16);
+//    test_routine_FrameDifferenceMorpho3x3fermeturefermeture(16);
+//    test_routine_FrameDifferenceMorpho3x3ouverture_pipe(16);
+//    test_routine_FrameDifferenceMorpho3x3fermeture_pipe(16);
     test_routine_FrameDifferenceMorpho3x3ouverture_bin(16);
     test_routine_FrameDifferenceMorpho3x3fermeture_bin(16);
 
 
 #endif
-   // creation_matrices_ROC(argv[1]);
-   // difference2Images();
+    // creation_matrices_ROC(argv[1]);
+    difference2Images();
 //    test_unitaire_SD_SSE2();
 
     /*ulong32 test = 1 << 31;
